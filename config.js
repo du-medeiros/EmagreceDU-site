@@ -11,5 +11,5 @@ window.__CONFIG = {
   repo: "du-medeiros/EmagreceDU-site",
   // OAuth Client ID (tipo "Web") do Google Cloud, para o backup no Google Drive (drive.js).
   // Vazio = seção do Drive desligada. No Android também é preciso um client "Android" com o SHA-1.
-  googleClientId: "",
+  googleClientId: "59036781845-ir09jbiamvihhfpctt83ia1hlact6k11.apps.googleusercontent.com",
 };

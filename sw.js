@@ -3,7 +3,7 @@
  * - Fontes e bibliotecas externas: cópia local primeiro, atualiza em segundo plano.
  * - APIs (Gemini, Open Food Facts): nunca guardadas.
  */
-const VERSION = "emagrecedu-v1.11.0";
+const VERSION = "emagrecedu-v1.11.1";
 const SHELL = ["./", "./index.html", "./app.css", "./app.js", "./config.js", "./i18n.js", "./i18n/en.js", "./i18n/es.js", "./support.js", "./drive.js", "./platform.js", "./features.js", "./vendor/jspdf.umd.min.js", "./vendor/qrcode.js", "./vendor/theme.js", "./consulta.html", "./vendor/fonts/bricolage-grotesque-latin-wght-normal.woff2", "./vendor/fonts/dm-sans-latin-400-normal.woff2", "./vendor/fonts/dm-sans-latin-500-normal.woff2", "./vendor/fonts/dm-sans-latin-600-normal.woff2", "./manifest.webmanifest", "./manual.html", "./privacidade.html",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png", "./icons/apple-touch-icon.png"];
 
