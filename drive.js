@@ -49,6 +49,17 @@
     if (!res || !res.accessToken || !res.accessToken.token) throw new Error("o Google não devolveu um token com acesso ao Drive");
     return res;
   }
+  // mensagens do Google traduzidas para o que a pessoa pode fazer
+  function friendly(e) {
+    const m = String((e && e.message) || e || "");
+    const T = (t) => (window.I18N ? I18N.t(t) : t);
+    if (/DEVELOPER_ERROR|\[10\]|status ?code ?10\b|unregistered|not registered/i.test(m)) return T("o Google não reconheceu este aplicativo. Falta cadastrar o cliente Android (nome do pacote e SHA-1) no Google Cloud.") + " (" + m.slice(0, 80) + ")";
+    if (/NoCredential|No credentials available|no account/i.test(m)) return T("não há conta Google neste aparelho. Adicione uma conta nas configurações do Android e tente de novo.");
+    if (/access_denied|not been verified|test users|testing/i.test(m)) return T("o Google recusou o acesso. Enquanto o app estiver em teste no Google Cloud, a sua conta precisa estar na lista de usuários de teste.");
+    if (/cancel/i.test(m)) return T("login cancelado.");
+    if (/CANNOT use scopes/i.test(m)) return T("esta versão do app não consegue pedir acesso ao Drive. Atualize o app.");
+    return m;
+  }
   function gis() {
     return new Promise((resolve, reject) => {
       if (window.google && window.google.accounts && window.google.accounts.oauth2) return resolve(window.google.accounts.oauth2);
@@ -180,7 +191,7 @@
     if (state.msg) h += '<div class="cups" style="margin:8px 0 0">' + esc(state.msg) + "</div>";
     host.innerHTML = h;
     const on = (id, fn) => { const b = document.getElementById(id); if (b) b.onclick = fn; };
-    on("drvConn", async () => { state.busy = true; state.msg = "Abrindo o login do Google…"; render(); try { await connect(); state.msg = ""; await list().catch(() => {}); } catch (e) { state.msg = I18N.t("Não conectou: {0}", String(e && e.message || e)); } finally { state.busy = false; render(); } });
+    on("drvConn", async () => { state.busy = true; state.msg = "Abrindo o login do Google…"; render(); try { await connect(); state.msg = ""; await list().catch(() => {}); } catch (e) { state.msg = I18N.t("Não conectou: {0}", friendly(e)); } finally { state.busy = false; render(); } });
     on("drvNow", () => backup("manual"));
     on("drvList", async () => { state.busy = true; state.msg = "Consultando o Drive…"; render(); try { await list(); state.msg = state.files.length ? "" : "Nenhum backup no Drive ainda."; } catch (e) { state.msg = String(e && e.message || e); } finally { state.busy = false; render(); } });
     on("drvOff", async () => { await disconnect(); state.msg = "Desconectado. Os backups continuam no seu Drive até você remover o acesso do app na conta Google."; render(); });

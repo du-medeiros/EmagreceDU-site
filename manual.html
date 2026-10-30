@@ -201,7 +201,7 @@ footer{color:var(--muted);font-size:.85rem;margin-top:40px}
   <li><b>Medidas</b> (pescoço, quadril, braço, coxa) com gordura corporal estimada, e <b>bioimpedância</b>.</li>
   <li><b>Proteção da massa magra:</b> junta o ritmo de perda (até ~1% do peso por semana), a proteína dos últimos 14 dias, o treino de força das últimas 4 semanas e o músculo medido na bioimpedância. Mostra o que está protegendo o músculo e o que merece atenção.</li>
   <li><b>Fotos de progresso:</b> uma frontal e uma lateral por sessão; comparação antes × agora e análise da IA. Use a <b>📷 Câmera guia</b>: ela mostra a última foto da mesma pose em transparência por cima da câmera, para você se encaixar na mesma posição e distância. Tem timer de 3 ou 10 segundos (para tirar sozinho), troca entre câmera frontal e traseira e um controle da transparência. Dicas: mesmo lugar, mesma luz, celular na altura do umbigo, de manhã em jejum.</li>
-  <li><b>Comparar deslizando:</b> com duas sessões de fotos ou mais, o botão abre o antes e depois sobrepostos com uma barra para arrastar. <b>Gerar imagem para compartilhar</b> monta uma imagem lado a lado; o rosto sai desfocado e o peso e a cintura só aparecem se você marcar.</li>
+  <li><b>Ver antes e depois lado a lado:</b> com duas sessões de fotos ou mais, o botão (logo abaixo das fotos de Antes e Agora) abre as duas fotos grandes, lado a lado. Dá para trocar as sessões ali mesmo, alternar entre frontal e lateral e usar <b>Deslizar</b> para sobrepor as fotos com uma barra de arrastar. <b>Gerar imagem para compartilhar</b> monta uma imagem lado a lado; o rosto sai desfocado e o peso e a cintura só aparecem se você marcar.</li>
   <li><b>Exames de sangue</b> com faixa de referência do laudo e painel do que repetir.</li>
 </ul>
 
@@ -329,6 +329,9 @@ footer{color:var(--muted);font-size:.85rem;margin-top:40px}
   <tr><td>"Sem conexão"</td><td>A IA e o código de barras precisam de internet. O resto funciona offline.</td></tr>
   <tr><td>Produto não encontrado no código de barras</td><td>Tire uma foto do rótulo com o botão Foto: a IA lê a tabela nutricional.</td></tr>
   <tr><td>Aparece "Nova versão disponível"</td><td>Toque em Atualizar. Seus dados não são afetados.</td></tr>
+  <tr><td>Google Drive: "o Google não reconheceu este aplicativo"</td><td>No Google Cloud, em Credenciais, confira o cliente OAuth do tipo Android: nome do pacote <code>io.github.dumedeiros.emagrecedu</code> e o SHA-1 da chave que assina o app.</td></tr>
+  <tr><td>Google Drive: "o Google recusou o acesso"</td><td>Enquanto o app estiver em teste no Google Cloud, adicione a sua conta em Tela de consentimento → Usuários de teste.</td></tr>
+  <tr><td>Não acho uma função nova</td><td>Em Ajustes → Sobre e ajuda, toque em <b>Novidades desta versão</b>: cada item tem um botão que leva direto até ele.</td></tr>
 </table>
 
 <div class="box warn"><b>Aviso</b>O EmagreceDU é uma ferramenta de registro e acompanhamento. Não faz diagnóstico, não prescreve e não substitui seu médico, nutricionista ou farmacêutico. As estimativas da IA e da tabela são aproximadas. Em caso de sintomas graves, procure atendimento (SAMU 192).</div>
