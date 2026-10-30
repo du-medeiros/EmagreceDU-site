@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacidade · EmagreceDU</title>
+<meta name="description" content="Política de privacidade do EmagreceDU: quais dados o app usa, onde ficam e com quem são compartilhados.">
+<meta name="theme-color" content="#10243E">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<style>
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:200 800;font-display:swap;src:url(vendor/fonts/bricolage-grotesque-latin-wght-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:400;font-display:swap;src:url(vendor/fonts/dm-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:500;font-display:swap;src:url(vendor/fonts/dm-sans-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:600;font-display:swap;src:url(vendor/fonts/dm-sans-latin-600-normal.woff2) format("woff2")}
+</style>
+<style>
+:root{--bg:#EDF1F4;--panel:#fff;--ink:#10243E;--muted:#5E6E82;--line:#D5DDE5;--soft:#F3F6F8;--prot:#1E7F69;--prot-soft:#DCEFE9;--warn:#A8782A;--warn-soft:#F5EBD6;--over:#BE3A1E;--water:#2E6DAA;--hero:#10243E;--hero-ink:#F4F7FA;--hero-muted:#9FB2C8}
+@media (prefers-color-scheme:dark){:root{--bg:#0C1522;--panel:#152133;--ink:#E7EDF4;--muted:#92A3B8;--line:#263650;--soft:#1B2A40;--prot:#46C3A6;--prot-soft:#17352F;--warn:#E0B254;--warn-soft:#3A3019;--over:#F0795A;--water:#7AB0EA;--hero:#0A1626}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+header{background:var(--hero);color:var(--hero-ink);padding:28px 20px 30px}
+header .in,main{max-width:720px;margin:0 auto}
+header h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:2.1rem;line-height:1.1;margin:0 0 6px;letter-spacing:-.02em}
+header p{margin:0;color:var(--hero-muted)}
+header a{color:var(--hero-ink)}
+nav.toc{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px 18px;margin:-18px 16px 0;position:relative}
+nav.toc ol{margin:0;padding-left:20px;columns:2;column-gap:24px;font-size:.95rem}
+@media (max-width:560px){nav.toc ol{columns:1}}
+nav.toc a{color:var(--ink)}
+main{padding:8px 16px 60px}
+h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.45rem;letter-spacing:-.01em;margin:34px 0 10px;padding-left:10px;border-left:3px solid var(--prot);scroll-margin-top:16px}
+h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.1rem;margin:22px 0 6px}
+p,li{max-width:68ch}
+a{color:var(--water)}
+ol.steps{counter-reset:s;list-style:none;padding:0}
+ol.steps>li{counter-increment:s;position:relative;padding:12px 14px 12px 52px;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin:8px 0}
+ol.steps>li::before{content:counter(s);position:absolute;left:14px;top:12px;width:26px;height:26px;border-radius:50%;background:var(--prot);color:#fff;font-family:"Bricolage Grotesque",sans-serif;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.box{border-radius:12px;padding:12px 14px;margin:12px 0;border:1px solid}
+.box.tip{background:var(--prot-soft);border-color:var(--prot)}
+.box.warn{background:var(--warn-soft);border-color:var(--warn)}
+.box b:first-child{display:block;font-family:"Bricolage Grotesque",sans-serif}
+code,kbd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+table{border-collapse:collapse;width:100%;font-size:.95rem;margin:10px 0}
+td,th{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:.85rem}
+.back{display:inline-block;margin-top:30px;background:var(--ink);color:var(--panel);padding:11px 18px;border-radius:12px;text-decoration:none;font-weight:600}
+footer{color:var(--muted);font-size:.85rem;margin-top:40px}
+</style>
+</head>
+<body>
+<header><div class="in">
+  <h1>Política de privacidade</h1>
+  <p>EmagreceDU · Diário de Bordo (site e app Android) · vigente desde 28/10/2026</p>
+</div></header>
+<main>
+<div class="box tip"><b>Resumo</b>O EmagreceDU não tem servidor, conta nem login. Tudo o que você registra fica no seu aparelho. Nada é vendido, nada é usado para publicidade, e o desenvolvedor não tem acesso aos seus dados.</div>
+
+<h2 id="dados">Quais dados o app guarda</h2>
+<p>O que você mesmo registra: refeições e nutrientes, água e café, peso e medidas, fotos de progresso e de pratos, medicação e aplicações, sintomas, sono, fome e humor, exames, metas, regras pessoais e dados de perfil (nome, referência para os cálculos, pronome, data de nascimento, altura). São dados de saúde e, por isso, dados pessoais sensíveis pela LGPD (Lei 13.709/2018).</p>
+
+<h2 id="onde">Onde os dados ficam</h2>
+<ul>
+  <li><b>No aparelho.</b> No site, no banco de dados do navegador; no app Android, no armazenamento interno do app, com uma cópia em arquivo para recuperação.</li>
+  <li><b>Backup do Google (app Android).</b> Se o backup do Android estiver ativo na sua conta Google, o sistema inclui a cópia interna do app no backup criptografado da sua conta, para restaurar ao reinstalar ou trocar de celular. Você controla isso em Configurações → Google → Backup.</li>
+  <li><b>Arquivos de backup.</b> O app salva um arquivo semanal em Documentos/EmagreceDU e gera arquivos quando você toca em Exportar. Esses arquivos ficam onde você os guardar ou enviar.</li>
+</ul>
+
+<h2 id="compartilha">Quando algum dado sai do aparelho</h2>
+<table>
+  <tr><th>Situação</th><th>O que é enviado</th><th>Para quem</th></tr>
+  <tr><td>Você usa a IA (estimar refeição, "Posso comer?", análise de fotos, resumo do relatório)</td><td>O texto ou a foto daquele pedido, com o contexto necessário (metas, regras, totais do dia)</td><td>Google (API Gemini), usando a <b>sua</b> chave. Vale a política do Google para a API; no plano gratuito, o Google pode usar o conteúdo para melhorar os produtos dele.</td></tr>
+  <tr><td>Você busca um código de barras</td><td>Só o número do código</td><td>Open Food Facts (base pública de alimentos)</td></tr>
+  <tr><td>Você gera o QR/link do modo consulta</td><td>O resumo vai compactado dentro do próprio link; quem abrir o link vê o resumo. Nenhum servidor recebe os dados</td><td>Quem você mostrar o QR ou enviar o link</td></tr>
+  <tr><td>Você apoia o projeto</td><td>Você é levado ao Livepix (ou à cobrança do Google Play); o app não vê dados de pagamento</td><td>Livepix / Google Play</td></tr>
+  <tr><td>O app verifica se há versão nova</td><td>Nenhum dado seu (consulta pública)</td><td>GitHub</td></tr>
+  <tr><td>Você conecta o Health Connect</td><td>Veja a seção abaixo</td><td>Fica no seu aparelho</td></tr>
+</table>
+<p>Fora isso, nenhum dado é transmitido. O app não usa analytics, rastreadores nem anúncios.</p>
+
+<h2 id="health">Health Connect (Android)</h2>
+<p>Com a sua permissão, o app:</p>
+<ul>
+  <li><b>lê</b> peso, percentual de gordura corporal, passos, sono, sessões de exercício, frequência cardíaca de repouso e VO₂máx gravados por outros apps (por exemplo, o app da sua balança ou do relógio), para preencher o diário, mostrar passos e sono do dia e registrar os treinos como exercícios do dia;</li>
+  <li><b>grava</b> as pesagens que você registra no EmagreceDU, para que outros apps de saúde as vejam.</li>
+</ul>
+<p>Esses dados são usados só para as funções acima, ficam no seu aparelho e não são transferidos a terceiros, usados para publicidade ou vendidos. O uso de dados recebidos do Health Connect segue a <a href="https://support.google.com/googleplay/android-developer/answer/12991134">política de permissões do Health Connect</a>, incluindo os requisitos de uso limitado. Você pode revogar as permissões a qualquer momento no app Health Connect ou em Metas → Health Connect → Permissões.</p>
+
+<h2 id="permissoes">Permissões do app Android</h2>
+<ul>
+  <li><b>Notificações e alarmes:</b> lembretes de aplicação, água, refeições, pesagem e remédios.</li>
+  <li><b>Câmera:</b> fotos de pratos e de progresso, tiradas por você.</li>
+  <li><b>Microfone:</b> só quando você toca em Falar para ditar uma refeição. O reconhecimento de voz é feito pelo serviço de voz do Android.</li>
+  <li><b>Biometria:</b> só se você ligar o bloqueio do app. A digital nunca é acessada pelo app; o Android só informa se a verificação deu certo.</li>
+  <li><b>Armazenamento (Android 10 ou anterior):</b> salvar o backup semanal em Documentos.</li>
+</ul>
+
+<h2 id="direitos">Seus direitos</h2>
+<p>Como os dados estão com você, você exerce os direitos da LGPD diretamente no app: acessar e levar os dados (Exportar backup), corrigir (editar qualquer registro) e apagar (Metas → Apagar todos os dados, ou desinstalar o app). Arquivos de backup que você salvou ou enviou precisam ser apagados por você.</p>
+
+<h2 id="criancas">Idade</h2>
+<p>O app é destinado a maiores de 18 anos e não deve ser usado para orientar emagrecimento de crianças ou adolescentes.</p>
+
+<h2 id="contato">Contato</h2>
+<p>Dúvidas sobre privacidade: abra uma issue em <a href="https://github.com/du-medeiros/EmagreceDU-site/issues">github.com/du-medeiros/EmagreceDU-site</a>. Mudanças nesta política serão publicadas nesta página, com a data de vigência atualizada.</p>
+
+<a class="back" href="./">Voltar ao app</a>
+<footer>EmagreceDU não substitui acompanhamento médico ou nutricional.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resumo para consulta · EmagreceDU</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1E241E">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<style>
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:200 800;font-display:swap;src:url(vendor/fonts/bricolage-grotesque-latin-wght-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:400;font-display:swap;src:url(vendor/fonts/dm-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:600;font-display:swap;src:url(vendor/fonts/dm-sans-latin-600-normal.woff2) format("woff2")}
+:root{
+  --bg:#F6F4EF; --panel:#FFFFFF; --ink:#191715; --muted:#7A7368; --line:#E2DDD3; --soft:#EFECE4;
+  --prot:#2B6E46; --prot-soft:#E0F0E6; --warn:#B86B14; --warn-soft:#FBF0DF;
+  --over:#B42318; --over-soft:#FCE8E6; --water:#246394; --water-soft:#E1EEF8;
+  --hero:#1E241E; --hero-2:#283128; --hero-ink:#F6F4EF; --hero-muted:#B8B0A4; --hero-line:rgba(246,244,239,.12);
+  --body:'DM Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --num:'Bricolage Grotesque','DM Sans',system-ui,sans-serif;
+  --r-lg:18px; --r:12px; --r-sm:8px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121110; --panel:#1C1A17; --ink:#F4F0E8; --muted:#8A8275; --line:#312D28; --soft:#26231F;
+    --prot:#4CAF73; --prot-soft:#183323; --warn:#E59A3C; --warn-soft:#382914;
+    --over:#F04438; --over-soft:#3A1A18; --water:#68A8DF; --water-soft:#172B3E;
+    --hero:#171A17; --hero-2:#222722; --hero-ink:#F4F0E8; --hero-muted:#9E9689; --hero-line:rgba(244,240,232,.1);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121110; --panel:#1C1A17; --ink:#F4F0E8; --muted:#8A8275; --line:#312D28; --soft:#26231F;
+    --prot:#4CAF73; --prot-soft:#183323; --warn:#E59A3C; --warn-soft:#382914;
+    --over:#F04438; --over-soft:#3A1A18; --water:#68A8DF; --water-soft:#172B3E;
+    --hero:#171A17; --hero-2:#222722; --hero-ink:#F4F0E8; --hero-muted:#9E9689; --hero-line:rgba(244,240,232,.1);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.consult{position:fixed;inset:0;background:var(--bg);z-index:30;overflow:auto;padding:0 16px 40px}
+.consult .bar{position:sticky;top:0;background:var(--hero);color:var(--hero-ink);margin:0 -16px 14px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+.consult .bar h2{font-family:var(--num);font-weight:700;font-size:1.2rem;margin:0}
+.consult .bar button{border:1px solid var(--hero-line);background:var(--hero-2);color:var(--hero-ink);border-radius:999px;padding:6px 12px;font-weight:600}
+.consult .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.consult .kv{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px}
+.consult .kv b{display:block;font-family:var(--num);font-size:1.35rem;font-weight:700;line-height:1.1}
+.consult .kv small{color:var(--muted);font-size:.78rem}
+.consult .kv.bad b{color:var(--over)}
+.consult h3{font-family:var(--num);font-weight:700;font-size:1.05rem;margin:18px 0 8px;padding-left:10px;border-left:3px solid var(--prot)}
+.consult p{margin:4px 0;font-size:.95rem}
+.consult .lrow{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.consult .lrow b.bad{color:var(--over)}
+h3.sec{font-family:var(--num);font-weight:700;font-size:1.15rem;letter-spacing:-.01em;margin:22px 0 10px;padding-left:10px;border-left:3px solid var(--prot)}
+.cups{font-size:.84rem;color:var(--muted);margin:0 0 14px}
+.note{color:var(--muted);font-size:.88rem;margin-top:12px}
+.consult{position:static;max-width:720px;margin:0 auto;padding:0 16px 40px}
+.consult .bar{margin:0 -16px 14px}
+.err{max-width:720px;margin:40px auto;padding:0 16px;color:var(--ink)}
+@media (min-width:720px){.consult .grid{grid-template-columns:repeat(3,1fr)}}
+@media print{.consult .bar{position:static;background:#1E241E;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="consult" id="out" role="document"></div>
+<script>
+const ALLOWED_TAGS=new Set(["DIV","SPAN","P","H1","H2","H3","H4","STRONG","B","EM","SMALL","UL","OL","LI","TABLE","THEAD","TBODY","TR","TH","TD","HR","BR"]);
+const ALLOWED_ATTRS=new Set(["class","colspan","rowspan","aria-label","style"]);
+const SAFE_STYLE_RE=/^(\s*(color|font-size|margin|margin-top)\s*:\s*(var\(--[a-z0-9\-]+\)|[0-9.]+(rem|px|em|%)|0)(\s+[0-9.]+(rem|px|em|%)|0)*\s*;?\s*)+$/i;
+
+function sanitizeFragment(dirtyHtml){
+  const parser=new DOMParser();
+  const doc=parser.parseFromString(String(dirtyHtml||""),"text/html");
+  const cleanNode=(node)=>{
+    for(const child of Array.from(node.childNodes)){
+      if(child.nodeType===Node.ELEMENT_NODE){
+        if(!ALLOWED_TAGS.has(child.tagName)){
+          child.remove();
+          continue;
+        }
+        for(const attr of Array.from(child.attributes)){
+          const name=attr.name.toLowerCase();
+          const val=attr.value||"";
+          if(!ALLOWED_ATTRS.has(name)||name.startsWith("on")||(name==="style"&&!SAFE_STYLE_RE.test(val))){
+            child.removeAttribute(attr.name);
+          }
+        }
+        cleanNode(child);
+      }else if(child.nodeType!==Node.TEXT_NODE){
+        child.remove();
+      }
+    }
+  };
+  cleanNode(doc.body);
+  const frag=document.createDocumentFragment();
+  while(doc.body.firstChild)frag.appendChild(doc.body.firstChild);
+  return frag;
+}
+
+(async()=>{
+  const out=document.getElementById("out");
+  const h=location.hash.slice(1);
+  const fail=(m)=>{
+    out.className="err";
+    out.replaceChildren();
+    const h2=document.createElement("h2");h2.textContent="Resumo indisponível";
+    const p1=document.createElement("p");p1.textContent=String(m||"");
+    const p2=document.createElement("p");const a=document.createElement("a");a.href="./";a.textContent="Abrir o EmagreceDU";p2.appendChild(a);
+    out.append(h2,p1,p2);
+  };
+  if(!h.startsWith("v1."))return fail("Este link não contém um resumo. Gere o QR code no app, em Relatório → Modo consulta → QR / link.");
+  if(!("DecompressionStream" in window))return fail("Este navegador não consegue abrir o resumo. Tente no Chrome, Edge ou Safari atualizados.");
+  try{
+    const b64=h.slice(3).replace(/-/g,"+").replace(/_/g,"/");const bin=atob(b64+"===".slice((b64.length+3)%4));
+    const u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);
+    const ds=new DecompressionStream("deflate-raw");const w=ds.writable.getWriter();w.write(u8);w.close();
+    const html=await new Response(ds.readable).text();
+    out.replaceChildren();
+    const bar=document.createElement("div");bar.className="bar";
+    const h2=document.createElement("h2");h2.textContent="Resumo para consulta";
+    const btn=document.createElement("button");btn.type="button";btn.textContent="Imprimir";btn.addEventListener("click",()=>window.print());
+    bar.append(h2,btn);
+    out.append(bar,sanitizeFragment(html));
+    document.title="Resumo para consulta · "+new Date().toLocaleDateString("pt-BR");
+  }catch(e){fail("O link parece incompleto ou danificado ("+(e&&e.message||e)+"). Gere o QR code de novo no app.");}
+})();
+</script>
+</body>
+</html>

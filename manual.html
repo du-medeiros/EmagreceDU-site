@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Manual · EmagreceDU</title>
+<meta name="description" content="Manual do EmagreceDU: instalação, primeiros passos, chave do Gemini, uso diário, backup e privacidade.">
+<meta name="theme-color" content="#10243E">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<style>
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:200 800;font-display:swap;src:url(vendor/fonts/bricolage-grotesque-latin-wght-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:400;font-display:swap;src:url(vendor/fonts/dm-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:500;font-display:swap;src:url(vendor/fonts/dm-sans-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:600;font-display:swap;src:url(vendor/fonts/dm-sans-latin-600-normal.woff2) format("woff2")}
+</style>
+<style>
+:root{--bg:#EDF1F4;--panel:#fff;--ink:#10243E;--muted:#5E6E82;--line:#D5DDE5;--soft:#F3F6F8;--prot:#1E7F69;--prot-soft:#DCEFE9;--warn:#A8782A;--warn-soft:#F5EBD6;--over:#BE3A1E;--water:#2E6DAA;--hero:#10243E;--hero-ink:#F4F7FA;--hero-muted:#9FB2C8}
+@media (prefers-color-scheme:dark){:root{--bg:#0C1522;--panel:#152133;--ink:#E7EDF4;--muted:#92A3B8;--line:#263650;--soft:#1B2A40;--prot:#46C3A6;--prot-soft:#17352F;--warn:#E0B254;--warn-soft:#3A3019;--over:#F0795A;--water:#7AB0EA;--hero:#0A1626}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+header{background:var(--hero);color:var(--hero-ink);padding:28px 20px 30px}
+header .in,main{max-width:720px;margin:0 auto}
+header h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:2.1rem;line-height:1.1;margin:0 0 6px;letter-spacing:-.02em}
+header p{margin:0;color:var(--hero-muted)}
+header a{color:var(--hero-ink)}
+nav.toc{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px 18px;margin:-18px 16px 0;position:relative}
+nav.toc ol{margin:0;padding-left:20px;columns:2;column-gap:24px;font-size:.95rem}
+@media (max-width:560px){nav.toc ol{columns:1}}
+nav.toc a{color:var(--ink)}
+main{padding:8px 16px 60px}
+h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.45rem;letter-spacing:-.01em;margin:34px 0 10px;padding-left:10px;border-left:3px solid var(--prot);scroll-margin-top:16px}
+h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.1rem;margin:22px 0 6px}
+p,li{max-width:68ch}
+a{color:var(--water)}
+ol.steps{counter-reset:s;list-style:none;padding:0}
+ol.steps>li{counter-increment:s;position:relative;padding:12px 14px 12px 52px;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin:8px 0}
+ol.steps>li::before{content:counter(s);position:absolute;left:14px;top:12px;width:26px;height:26px;border-radius:50%;background:var(--prot);color:#fff;font-family:"Bricolage Grotesque",sans-serif;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.box{border-radius:12px;padding:12px 14px;margin:12px 0;border:1px solid}
+.box.tip{background:var(--prot-soft);border-color:var(--prot)}
+.box.warn{background:var(--warn-soft);border-color:var(--warn)}
+.box b:first-child{display:block;font-family:"Bricolage Grotesque",sans-serif}
+code,kbd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+table{border-collapse:collapse;width:100%;font-size:.95rem;margin:10px 0}
+td,th{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:.85rem}
+.back{display:inline-block;margin-top:30px;background:var(--ink);color:var(--panel);padding:11px 18px;border-radius:12px;text-decoration:none;font-weight:600}
+footer{color:var(--muted);font-size:.85rem;margin-top:40px}
+</style>
+</head>
+<body>
+<header><div class="in">
+  <h1>Manual do EmagreceDU</h1>
+  <p>Seu diário de emagrecimento: proteína, hidratação, medicação, sintomas, medidas e relatórios para levar ao médico. <a href="./">Abrir o app</a></p>
+</div></header>
+<nav class="toc" aria-label="Sumário"><ol>
+  <li><a href="#instalar">Instalar no celular</a></li>
+  <li><a href="#comecar">Primeiro acesso</a></li>
+  <li><a href="#chave">Criar sua chave do Gemini</a></li>
+  <li><a href="#hoje">Aba Hoje</a></li>
+  <li><a href="#saude">Aba Saúde</a></li>
+  <li><a href="#corpo">Aba Corpo</a></li>
+  <li><a href="#relatorio">Aba Relatório</a></li>
+  <li><a href="#metas">Aba Metas</a></li>
+  <li><a href="#android">App Android: lembretes, widget e mais</a></li>
+  <li><a href="#backup">Backup e troca de celular</a></li>
+  <li><a href="#privacidade">Privacidade</a></li>
+  <li><a href="#problemas">Problemas comuns</a></li>
+</ol></nav>
+<main>
+
+<h2 id="instalar">1. Instalar no celular</h2>
+<p>O EmagreceDU existe em duas formas, com os mesmos dados e o mesmo visual:</p>
+<ul>
+  <li><b>App Android (recomendado no Android):</b> tem lembretes no celular, widget, Health Connect, leitor de código de barras, ditado por voz, bloqueio com digital e backup automático. Veja <a href="#android">App Android</a>.</li>
+  <li><b>Versão web (Android e iPhone):</b> roda no navegador e pode ser instalada na tela inicial. Funciona sem internet (só a IA e o código de barras precisam de conexão).</li>
+</ul>
+<h3>App Android (APK)</h3>
+<ol class="steps">
+  <li>No celular, abra <a href="https://github.com/du-medeiros/EmagreceDU-site/releases/latest">github.com/du-medeiros/EmagreceDU-site/releases/latest</a> e toque no arquivo <b>EmagreceDU-x.y.z.apk</b>.</li>
+  <li>Quando o download terminar, toque em <b>Abrir</b>. Na primeira vez o Android pede para <b>permitir a instalação de apps desta fonte</b> (o navegador): permita e volte.</li>
+  <li>Toque em <b>Instalar</b>. Se aparecer um aviso do Play Protect sobre app desconhecido, toque em <b>Mais detalhes → Instalar mesmo assim</b> (acontece com qualquer app fora da Play Store).</li>
+  <li>Quando sair uma versão nova, o próprio app mostra <b>Nova versão do app · Baixar</b>. A atualização instala por cima e mantém os dados.</li>
+</ol>
+<div class="box tip"><b>Já usa a versão web?</b>Antes de instalar o app, na versão web vá em <b>Ajustes → Backup → Exportar backup</b>. No app, na primeira tela, toque em <b>Importar meu backup</b> e escolha o arquivo. Tudo vem junto, inclusive as fotos.</div>
+<h3>Versão web no Android (Chrome)</h3>
+<ol class="steps">
+  <li>Abra o endereço do app no Chrome.</li>
+  <li>Toque no menu <kbd>⋮</kbd> no canto superior direito.</li>
+  <li>Toque em <b>Instalar app</b> (em alguns aparelhos aparece como <b>Adicionar à tela inicial</b>) e confirme.</li>
+</ol>
+<h3>Versão web no iPhone (Safari)</h3>
+<ol class="steps">
+  <li>Abra o endereço no Safari.</li>
+  <li>Toque no botão <b>Compartilhar</b> (quadrado com seta para cima).</li>
+  <li>Toque em <b>Adicionar à Tela de Início</b>.</li>
+</ol>
+
+<h2 id="comecar">2. Primeiro acesso</h2>
+<p>Na primeira abertura o app pede nome, a referência para os cálculos (feminina ou masculina), data de nascimento, altura, peso atual, meta de peso e se você usa medicação semanal (pelo princípio ativo: semaglutida, tirzepatida, liraglutida, dulaglutida…). Com isso ele sugere metas iniciais de proteína, calorias e água.</p>
+<div class="box warn"><b>Importante</b>As metas sugeridas são pontos de partida calculados por fórmulas. Revise com seu médico ou nutricionista, principalmente se você usa medicação para emagrecer.</div>
+<p>Se você já usava o app em outro aparelho, toque em <b>Importar meu backup</b> em vez de preencher o cadastro (veja <a href="#backup">Backup</a>).</p>
+<p>Depois do cadastro, abra a aba <b>Metas</b> e escreva <b>suas regras</b>: o que você combinou com seu médico ou nutricionista (por exemplo: "proteína em todas as refeições", "nada de fritura à noite"). A IA usa essas regras para avaliar cada refeição.</p>
+
+<h2 id="chave">3. Criar sua chave do Gemini (Google AI)</h2>
+<p>A inteligência artificial do app é o <b>Gemini</b>, do Google. Cada pessoa usa a própria chave, que é gratuita para uso pessoal. Com ela o app:</p>
+<ul>
+  <li>estima calorias, proteína e sódio pelo que você descreve em texto;</li>
+  <li>reconhece o prato pela <b>foto</b> e lê tabelas nutricionais de rótulos;</li>
+  <li>responde o <b>"Posso comer?"</b> antes de você comer;</li>
+  <li>faz a análise das <b>fotos de progresso</b> e dos relatórios.</li>
+</ul>
+<p>Sem chave, o app continua funcionando com a tabela de alimentos, o código de barras e o lançamento manual.</p>
+
+<h3>Passo a passo (cerca de 3 minutos)</h3>
+<ol class="steps">
+  <li>No celular ou no computador, acesse <a href="https://aistudio.google.com" target="_blank" rel="noopener">aistudio.google.com</a> e entre com sua conta Google.</li>
+  <li>Se aparecer uma tela de termos de uso, leia e aceite.</li>
+  <li>No menu, toque em <b>Get API key</b> (em português, <b>Obter chave de API</b>).</li>
+  <li>Toque em <b>Create API key</b> (<b>Criar chave de API</b>). Se o site pedir um projeto do Google Cloud, escolha o sugerido ou deixe ele criar um novo.</li>
+  <li>A chave aparece na tela: um texto longo que começa com <code>AIza</code>. Toque em <b>Copiar</b>.</li>
+  <li>No EmagreceDU, abra <b>Ajustes → Inteligência artificial (Gemini)</b> e cole a chave no campo.</li>
+  <li>Toque em <b>Testar conexão</b>. Deve aparecer "Conexão funcionando. Texto ok · imagem ok".</li>
+  <li>Toque em <b>Salvar tudo</b>. Pronto: os botões de IA já funcionam.</li>
+</ol>
+<div class="box tip"><b>A chave é como uma senha</b>Não envie para ninguém e não publique em lugar nenhum. No app Android ela fica no <b>cofre do Android</b> (Keystore), criptografada; na versão web, num espaço separado do navegador. Ela <b>não vai nos arquivos de backup</b>: ao trocar de aparelho, cole a chave de novo. O app não manda a chave para nenhum servidor além do próprio Google.</div>
+
+<h3>Proteger a chave (recomendado)</h3>
+<p>Você pode limitar a chave para que ela só funcione no endereço do EmagreceDU. Assim, mesmo que alguém a veja, não consegue usar em outro site.</p>
+<ol class="steps">
+  <li>Acesse <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">console.cloud.google.com → APIs e serviços → Credenciais</a>, com a mesma conta Google.</li>
+  <li>Toque no nome da sua chave na lista.</li>
+  <li>Em <b>Restrições de aplicativo</b>, escolha <b>Sites</b> (referenciadores HTTP) e adicione o endereço do app com <code>/*</code> no final, por exemplo <code>https://du-medeiros.github.io/*</code>.</li>
+  <li>Em <b>Restrições de API</b>, escolha <b>Restringir chave</b> e marque <b>Generative Language API</b>.</li>
+  <li>Toque em <b>Salvar</b>. A mudança leva alguns minutos para valer.</li>
+</ol>
+<p>Se depois disso o teste falhar com "chave recusada", confira se o endereço digitado é exatamente o do app.</p>
+
+<h3>Limites, custos e privacidade</h3>
+<ul>
+  <li><b>Plano gratuito:</b> tem um limite de uso por minuto e por dia. Para uma pessoa registrando as refeições do dia, costuma sobrar. Se aparecer "limite de uso atingido", espere um minuto. Os modelos mais novos costumam <b>não ter cota no plano gratuito</b> (o Google devolve "cota do dia esgotada" logo no primeiro pedido): o app percebe, põe esse modelo em descanso até a virada do dia e vai direto ao próximo que responde, em vez de repetir a tentativa. Em Ajustes → IA, "Testar conexão" mostra qual modelo está em uso.</li>
+  <li><b>Velocidade:</b> os modelos "flash" pensam antes de responder por padrão, o que custava 10–20 s por refeição. O app desliga esse "pensar" para estimar refeições e ler fotos (a qualidade da estimativa não muda) e o mantém só na análise do período, que merece.</li>
+  <li><b>Privacidade no plano gratuito:</b> pelos termos do Google, o conteúdo enviado no plano gratuito pode ser usado para melhorar os produtos deles. Para fotos do corpo, considere ativar o faturamento na sua conta do AI Studio (o custo de uso pessoal é baixo; veja os preços em <a href="https://ai.google.dev/pricing" target="_blank" rel="noopener">ai.google.dev/pricing</a>) ou simplesmente não usar a análise de fotos de progresso.</li>
+  <li><b>Modelo:</b> deixe em branco. O app consulta a lista de modelos da sua conta e escolhe sozinho o melhor "flash" disponível (rápido e econômico). Se o Google aposentar um modelo, o app troca sem você fazer nada. Quando o Google está sobrecarregado ("alta demanda"), o app tenta de novo três vezes antes de avisar.</li>
+  <li><b>Enquanto a IA trabalha</b> a tela esmaece e aparece o mostrador do app com o ponteiro oscilando, a etapa atual e o tempo. Toque em <b>Continuar usando o app</b> para tirar o véu; o indicador pequeno continua no lugar e o resultado chega do mesmo jeito.</li>
+  <li><b>"Não consegui falar com o Google" com o celular online:</b> o app tenta três vezes e depois sonda outro endereço do Google para dizer o que aconteceu. A causa mais comum é o Android não conseguir <em>encontrar o endereço</em> da IA (falha de DNS): acontece por alguns segundos ao trocar de Wi‑Fi para dados, em Wi‑Fi com página de login, ou quando há <b>DNS privado</b> (Configurações → Conexões → Mais configurações), <b>VPN</b> ou bloqueador de anúncios ativo. Alterne a rede ou desative o DNS privado/VPN e tente de novo. O diagnóstico em Ajustes → IA mostra as últimas tentativas.</li>
+  <li><b>Cada pedido demorando mais de um minuto:</b> o app tem dois caminhos até o Google (a camada nativa do Android e a do navegador interno). Em alguns aparelhos um deles trava até o tempo limite. O app lembra qual caminho respondeu da última vez e, se ele não responder em 6 segundos, dispara o outro em paralelo; vale a primeira resposta. O diagnóstico mostra "(reserva)" quando foi o segundo caminho que venceu.</li>
+</ul>
+
+<h2 id="hoje">4. Aba Hoje</h2>
+<p><b>Repetir e Recentes:</b> dentro da folha de registro, logo abaixo de Registrar, uma faixa deslizante com "repetir a mesma refeição de ontem", seus favoritos (★) e os itens recentes com mais proteína; <b>ver todos</b> abre a lista completa. Na aba Saúde, os cartões <b>Pressão e pulso</b> e <b>STOP-Bang</b> ficam recolhidos com o resumo no título; toque para abrir.</p>
+<p><b>Sugerir o resto do dia (IA):</b> abaixo da distribuição da proteína, um botão pede à IA um cardápio para as refeições que ainda vêm, usando seus favoritos e recentes e o que falta de proteína e calorias. Cada item (ou "Lançar tudo") entra no diário com um toque. Na aba Relatório, a <b>Lista de compras</b> reúne o que você mais comeu no período para compartilhar.</p>
+<p><b>Pedágio de belisco:</b> em Metas você define quantos passos cada belisco "custa" (padrão 1.500; pode desligar). Abaixo dos beliscos aparece se o pedágio do dia está quitado ou quantos passos faltam; sem Health Connect, 10 min de caminhada registrada valem 1.000 passos. <b>Meta de passos adaptativa</b> (também em Metas): a cada 7 dias sobe 5% quando você bateu a meta em 5 de 7 dias e recua 10% numa semana sem bater, para a meta continuar possível em semana de enjoo.</p>
+<p>O painel escuro do topo tem três blocos: <b>calorias</b> (com quanto ainda resta), <b>proteína</b> (o mostrador) e <b>água</b> com o sódio logo abaixo. Em seguida vem a <b>distribuição da proteína</b> pelas refeições: quanto você já comeu e quanto cabe em cada refeição que ainda falta. O cartão com o peso mostra sua faixa de IMC e quanto já perdeu.</p>
+<p><b>Registrar uma refeição:</b> toque no campo <b>O que você comeu ou bebeu?</b> logo abaixo do painel, ou no botão <b>+</b> no meio da barra de abas (ele funciona de qualquer aba). Abre uma folha com o campo de texto, a refeição, Foto, Código de barras, Posso comer?, os atalhos de repetir, os beliscos, a tabela de alimentos e o lançamento manual. Os ícones de câmera e de código de barras ao lado do campo vão direto para a foto ou para o leitor. Depois de registrar, a folha fecha sozinha; o botão voltar do Android, a tecla Esc ou o × também fecham. No computador, as abas ficam numa barra lateral com o botão <b>Registrar refeição</b> no topo.</p>
+<table>
+  <tr><th>Como registrar</th><th>Quando usar</th></tr>
+  <tr><td><b>Texto</b> + Registrar</td><td>Descreva com quantidades ("150 g de frango, 2 colheres de arroz"). A IA estima tudo.</td></tr>
+  <tr><td><b>📷 Foto</b></td><td>Foto do prato ou do rótulo. Se a IA não tiver certeza, ela pergunta.</td></tr>
+  <tr><td><b>Código de barras</b></td><td>Produtos embalados. Busca na base Open Food Facts; você informa quantos gramas comeu.</td></tr>
+  <tr><td><b>Tabela de alimentos</b></td><td>Funciona sem IA e sem internet, com ~100 alimentos comuns.</td></tr>
+  <tr><td><b>Repetir rápido</b></td><td>Os últimos alimentos lançados viram atalhos de um toque.</td></tr>
+  <tr><td><b>Manual</b></td><td>Valores do rótulo digitados por você.</td></tr>
+</table>
+<ul>
+  <li><b>Posso comer?</b> avalia o que você pretende comer contra suas regras e metas, sem registrar.</li>
+  <li><b>Água e café:</b> "Café com pedágio" registra o café e um copo de água antes (a regra de beber água antes de cada café); "sem pedágio" registra só o café.</li>
+  <li><b>+ belisco:</b> abre a folha de registro já na seção de beliscos: balas, chocolate, salgadinho e afins em um toque.</li>
+  <li><b>Modo dia difícil:</b> para dias de enjoo ou sem fome. Mostra um plano mínimo e não conta o dia como falha.</li>
+  <li>Toque em qualquer item para <b>editar</b>; o × pede confirmação antes de excluir.</li>
+  <li>Toque na data no topo para voltar para hoje; as setas navegam pelos dias.</li>
+</ul>
+
+<h2 id="saude">5. Aba Saúde</h2>
+<ul>
+  <li><b>Medicação semanal:</b> dia do ciclo, próxima dose, rodízio do local de aplicação e a <b>calculadora da seringa</b> (quantas UI puxar), a partir do frasco cadastrado em Metas.</li>
+  <li><b>Revisão de dose:</b> depois de 4 aplicações seguidas na mesma dose, aparece um cartão com o que a bula prevê e um <b>resumo para levar ao médico</b> (peso, sintomas, fome, calorias e proteína nessas semanas), com o botão <b>Copiar resumo</b>. O app nunca indica mudar a dose: quem decide é o médico. Depois da consulta, toque em <b>Já conversei com o médico</b> e o aviso some até a próxima mudança de dose.</li>
+  <li><b>Padrão do ciclo:</b> uma tabela com fome, calorias e cada sintoma em cada dia depois da aplicação (D1 = dia da aplicação), usando todo o seu histórico, e frases como "náusea aparece em 3 de 4 dias 2 do ciclo". Ajuda a planejar a semana e a conversar com o médico.</li>
+  <li><b>Remédios:</b> cada remédio tem uma frequência, definida em Metas → Outros medicamentos:
+    <ul>
+      <li><b>Todo dia</b> e <b>Dias da semana</b> (ex.: vitamina D às segundas): aparecem para marcar só nos dias certos, e a adesão no relatório conta só esses dias.</li>
+      <li><b>Quando precisar</b> (analgésico, antialérgico, remédio para enjoo): o botão <b>+ Tomei</b> registra a dose com o horário. Se você cadastrar o intervalo mínimo e o máximo por dia, o app avisa antes de registrar uma dose fora disso. Toque no horário para corrigir ou apagar.</li>
+    </ul>
+  </li>
+  <li><b>Sono, fome e humor:</b> notas de 1 a 5.</li>
+  <li><b>Sintomas e sinais de alerta:</b> os chips vermelhos (dor abdominal forte, vômitos persistentes, tontura ao levantar…) mostram na hora o que fazer e quando procurar atendimento.</li>
+  <li><b>Pressão e pulso</b> (e glicemia, se você mede): alerta pressão baixa repetida, alta persistente e outros sinais.</li>
+  <li><b>Treino de força:</b> meta semanal (1 a 5 vezes), os dias da semana marcados e as semanas seguidas na meta. <b>+ Registrar treino de força</b> guarda duração, esforço e grupos treinados. No app Android, escolha os dias para receber o lembrete de treino.</li>
+  <li><b>Exercícios e Semana ativa:</b> cada exercício mostra as calorias estimadas (pelo MET do tipo e da intensidade, com o seu peso atual; os importados do Health Connect usam o valor medido). O cartão <b>Semana ativa</b> soma os minutos dos últimos 7 dias contra os 150 min/semana recomendados pela OMS, a média de passos e os dias em que você bateu a meta de passos (definida em Metas; padrão 7.000). Na aba Hoje, o cartão Movimento tem o cronômetro <b>Começar caminhada</b> (ao parar, registra os minutos) e o atalho <b>+ 10 min de caminhada</b>. No fim do dia ele mostra o <b>gasto estimado</b> (Mifflin-St Jeor × 1,1 + calorias ativas), o que você comeu e o déficit; avisa quando o déficit passa de ~1.000 kcal (risco de perder músculo) ou quando você treinou e a proteína ficou baixa. Com o Health Connect, marca <b>✓ caminhou após o almoço/jantar</b> quando houve 800+ passos na hora seguinte ao registro. O <b>Padrão do ciclo</b> ganha as linhas Passos e Treino e sugere os dias do ciclo em que você mais se mexe para marcar os treinos.</li>
+  <li><b>Sequências:</b> no cartão Semana ativa aparecem os dias seguidos na meta de proteína, na meta de passos e registrando; também entram na "semana em revisão" e no widget (🔥).</li>
+  <li><b>Pressão e glicemia do Health Connect:</b> medições de monitores de pressão e glicosímetros conectados ao Health Connect entram em Pressão e pulso com o horário e a origem; o app não as reenvia.</li>
+  <li><b>Coração:</b> se o relógio medir, a frequência cardíaca de repouso (com a variação em 30 dias) e o VO₂máx aparecem em Semana ativa e no relatório; os dois melhoram com a perda de peso e são bons argumentos na consulta.</li>
+  <li><b>Álcool</b>, <b>intestino</b> e o questionário <b>STOP-Bang</b> de risco de apneia.</li>
+</ul>
+
+<h2 id="corpo">6. Aba Corpo</h2>
+<ul>
+  <li><b>Pesagem</b> com cintura (meça no ponto médio entre a última costela e o osso do quadril, sempre no mesmo lugar).</li>
+  <li><b>Gráficos:</b> Peso (com tendência, faixa de ritmo esperado e projeção da meta), Ritmo semanal, Medidas e Cruzar (peso × sódio, calorias, proteína ou água). <b>Toque num ponto</b> para ver tudo daquele dia.</li>
+  <li><b>Meta e peso ideal:</b> faixa saudável para sua altura, idade e sexo, e quanto do caminho você já percorreu.</li>
+  <li><b>Medidas</b> (pescoço, quadril, braço, coxa) com gordura corporal estimada, e <b>bioimpedância</b>.</li>
+  <li><b>Proteção da massa magra:</b> junta o ritmo de perda (até ~1% do peso por semana), a proteína dos últimos 14 dias, o treino de força das últimas 4 semanas e o músculo medido na bioimpedância. Mostra o que está protegendo o músculo e o que merece atenção.</li>
+  <li><b>Fotos de progresso:</b> uma frontal e uma lateral por sessão; comparação antes × agora e análise da IA. Use a <b>📷 Câmera guia</b>: ela mostra a última foto da mesma pose em transparência por cima da câmera, para você se encaixar na mesma posição e distância. Tem timer de 3 ou 10 segundos (para tirar sozinho), troca entre câmera frontal e traseira e um controle da transparência. Dicas: mesmo lugar, mesma luz, celular na altura do umbigo, de manhã em jejum.</li>
+  <li><b>Exames de sangue</b> com faixa de referência do laudo e painel do que repetir.</li>
+</ul>
+
+<h2 id="relatorio">7. Aba Relatório</h2>
+<p>Escolha o período (7 a 90 dias) para ver médias, gráficos e indicadores de segurança. Entram também o treino de força por semana, os remédios tomados "quando precisar", o padrão do ciclo e, se você usa o Health Connect no app Android, os <b>passos</b> (com gráfico) e o <b>sono medido</b> pelo relógio ou celular. Os botões:</p>
+<ul>
+  <li><b>Feedback do parceiro:</b> o que funcionou, pontos de atenção e um plano para os próximos dias.</li>
+  <li><b>Relatório para o médico:</b> texto objetivo para levar à consulta.</li>
+  <li><b>Modo consulta:</b> uma tela com tudo o que o médico costuma perguntar, para mostrar no celular.</li>
+  <li><b>PDF</b> e <b>CSV</b> (planilha) para enviar ou imprimir. O PDF traz passos, sono medido, remédios sob demanda com os horários, o padrão do ciclo e, se houver, o resumo da revisão de dose. Funciona sem internet.</li>
+</ul>
+
+<h2 id="metas">8. Aba Metas e Ajustes</h2>
+<h3>Medicação pelo princípio ativo</h3>
+<p>Cadastre a medicação pelo <b>princípio ativo</b> (semaglutida, tirzepatida, liraglutida, dulaglutida; retatrutida, ainda em pesquisa; ou "Outro"), que está na caixa e na receita. O app não cita marcas comerciais: a legislação sanitária brasileira restringe a divulgação de medicamentos sob prescrição, e nomes de marca são propriedade dos laboratórios. A liraglutida é diária; as outras, semanais: o app ajusta o ciclo, os lembretes e a revisão de dose conforme isso.</p>
+<h3>Referência para os cálculos e pronome</h3>
+<p>As fórmulas de gordura corporal, peso ideal, cintura e gasto energético foram calibradas em dois grupos de referência, chamados aqui de <b>feminina</b> e <b>masculina</b>. Escolha a que seu médico ou nutricionista indicar; pessoas em terapia hormonal podem precisar de uma referência diferente da atribuída ao nascer. Isso não define quem você é: só ajusta as contas. Em <b>Como o app fala com você</b>, escolha linguagem sem gênero (padrão), feminino ou masculino; a IA também segue essa escolha.</p>
+<h3>Favoritos, repetir ontem e desfazer</h3>
+<p>Ao editar um alimento, toque em <b>Favoritar</b>: ele vira um atalho na aba Hoje. Se ontem você registrou a mesma refeição, aparece <b>Repetir … de ontem</b>. Excluir qualquer registro agora é imediato, com o botão <b>Desfazer</b> por alguns segundos.</p>
+<h3>Exames pela foto do laudo</h3>
+<p>Em Corpo → Exames, <b>Importar do laudo (foto)</b>: a IA lê a tabela, você confere cada valor (desmarque o que estiver errado) e salva. Precisa da chave do Gemini.</p>
+<h3>PDF para nutricionista e QR da consulta</h3>
+<p>Em Relatório, <b>PDF para nutricionista</b> gera um diário alimentar enxuto: metas e orientações, médias e o que foi comido dia a dia. No <b>Modo consulta</b>, o botão <b>QR / link</b> gera um código que o médico lê com a câmera e abre o resumo no navegador dele; os dados vão dentro do próprio link, sem passar por servidor.</p>
+<p><b>Metas</b> é o seu plano: perfil, metas diárias (com o botão <b>Sugerir metas</b>), suas regras, distribuição da proteína pelas refeições, medicação e frasco, outros medicamentos e polivitamínico.</p>
+<p><b>Ajustes</b> (a engrenagem no topo da tela) é a configuração do app, em grupos: Inteligência artificial (chave do Gemini), Lembretes/Health Connect/widget (no app Android), Aparência (tema), Backup e restauração, Apoie o projeto e Sobre. Toque num grupo para abrir; o botão voltar do celular retorna à lista.</p>
+<p><b>Idioma:</b> o app segue o idioma do celular (português, inglês ou espanhol). Em <b>Ajustes → Aparência → Idioma</b> você pode fixar um. Este manual e a política de privacidade estão só em português.</p>
+<p><b>Aparência e cores:</b> além do tema claro, escuro ou <b>preto</b> (fundo totalmente preto, que economiza bateria em telas OLED), escolha as cores: <b>Do EmagreceDU</b> (verde e terracota), <b>Do sistema</b> (a cor do papel de parede, Android 12+) ou <b>Personalizada</b>, com nove amostras ou qualquer cor; o app gera a paleta clara e escura a partir dela. <b>Topo do app</b> define se o cabeçalho fica no escuro neutro padrão, escuro ou claro na cor principal, e <b>Widgets</b> se os widgets da tela inicial seguem a mesma paleta (a prévia mostra como ficam). Toque em Salvar.</p>
+<h3>Apoie o projeto</h3>
+<p>O EmagreceDU é gratuito e sem anúncios. Se quiser pagar um café para o desenvolvedor, em Ajustes → Apoie o projeto escolha um valor e toque em <b>Apoiar por Pix</b>: abre o Livepix, uma página de pagamento por Pix; o app não vê nem guarda nenhum dado de pagamento. Na versão da Play Store, o apoio é feito pela cobrança do Google Play.</p>
+
+<h2 id="android">9. App Android: lembretes, widget e mais</h2>
+<p>Estes recursos existem só no app Android. A configuração fica em <b>Ajustes</b> (engrenagem), no grupo Lembretes, Health Connect e widget, com as seções Lembretes, Health Connect, Widget e atalhos, Privacidade, Backup automático e Atualizações.</p>
+
+<h3>Lembretes</h3>
+<p>Na primeira abertura aparece o convite <b>Ative os lembretes</b>; toque em <b>Ativar</b> e permita as notificações. Em Ajustes → Lembretes você ajusta cada um (horário em branco desliga aquele lembrete):</p>
+<table>
+  <tr><th>Lembrete</th><th>Como funciona</th></tr>
+  <tr><td>Dia da aplicação</td><td>No dia fixo da medicação, de manhã, com a dose e o local sugerido. À noite, se a aplicação ainda não foi registrada, lembra de novo.</td></tr>
+  <tr><td>Água</td><td>No intervalo e horários escolhidos. A notificação tem o botão <b>+1 copo</b>, que registra sem abrir o diário. Com <b>Água só quando estiver atrasado</b> ligado, o app compara o que você já bebeu com o ritmo do dia e pula os lembretes desnecessários.</td></tr>
+  <tr><td>Semana em revisão</td><td>Domingo às 20h: variação de peso, proteína média, treinos de força e um foco para a próxima semana.</td></tr>
+  <tr><td>Refeições</td><td>Café da manhã, almoço e jantar, com a meta de proteína daquela refeição. Não lembra se a refeição já foi registrada.</td></tr>
+  <tr><td>Pesagem</td><td>Uma vez por semana, no dia escolhido (padrão: o dia da aplicação).</td></tr>
+  <tr><td>Outros remédios</td><td>Usa os horários cadastrados em Metas → Outros medicamentos. O botão <b>Tomei</b> marca o remédio no dia.</td></tr>
+  <tr><td>Validade do frasco</td><td>Dois dias antes e no dia em que o frasco aberto vence (precisa da data de abertura e da validade em Metas).</td></tr>
+  <tr><td>Fotos de progresso</td><td>A cada 7, 14 ou 28 dias, contados da última sessão de fotos.</td></tr>
+  <tr><td>3 dias sem abrir</td><td>Um lembrete gentil se o diário ficar parado.</td></tr>
+  <tr><td>Caminhada pós-refeição (opcional)</td><td>25 min depois de registrar o almoço ou o jantar, só nos dias em que a meta de passos ainda não foi batida. Toque para registrar 10 min.</td></tr>
+</table>
+<p>Use <b>Testar</b> para ver uma notificação em 5 segundos. Por padrão o Android entrega lembretes com alguns minutos de folga para economizar bateria; para remédios no horário exato, toque em <b>Horário exato</b> e permita <b>Alarmes e lembretes</b>.</p>
+<div class="box warn"><b>Os lembretes não chegam?</b>Confira em Configurações do Android → Apps → EmagreceDU: <b>Notificações</b> ativadas e <b>Bateria</b> sem restrição. Alguns celulares (Xiaomi, Samsung, Motorola) encerram apps em segundo plano; marque o EmagreceDU como "sem restrições".</div>
+
+<h3>Health Connect</h3>
+<p>O Health Connect é o cofre de saúde do próprio Android, dentro do celular (não é a nuvem do Google). Apps de saúde gravam nele e leem dele, cada um só com as permissões que você der: é assim que o app da balança, o do relógio e o EmagreceDU trocam dados sem se conectar diretamente. Conectando o EmagreceDU:</p>
+<ul>
+  <li>o <b>peso da sua balança inteligente</b> (Zepp, Mi Fitness, Samsung Health, Eufy…) entra no diário sozinho, nos dias em que você não pesou manualmente;</li>
+  <li>a <b>gordura corporal</b> da balança vira um registro de bioimpedância;</li>
+  <li><b>passos</b> e <b>sono</b> do relógio ou do celular aparecem na aba Hoje (cartão <b>Movimento</b>, com a meta de passos, a distância e as calorias estimadas da caminhada), e as horas dormidas são preenchidas se você ainda não preencheu;</li>
+  <li><b>treinos</b> gravados pelo relógio ou por apps de corrida/academia (caminhada, corrida, bicicleta, musculação, natação, ioga…) viram exercícios do dia na aba Saúde, com a duração e as calorias que o aparelho mediu. Um treino que você já lançou à mão (mesmo tipo, duração parecida) não é duplicado; um que você apagar não volta;</li>
+  <li>o peso que você registra no app vai para o Health Connect, para outros apps verem; e, se você ligar <b>Enviar meus exercícios para o Health Connect</b> (pede a permissão de gravar exercícios), as caminhadas e treinos lançados à mão ou pelo cronômetro aparecem no Samsung Health, Google Fit e afins como sessões de exercício. É só isso que sai do EmagreceDU: refeições, remédios, sintomas e fotos não saem.</li>
+</ul>
+<p>Sem balança inteligente nem relógio, o Health Connect não traz nada; nesse caso não precisa conectar.</p>
+<ol class="steps">
+  <li>No app da balança ou do relógio, ative a sincronização com o Health Connect (geralmente em Perfil → Apps conectados).</li>
+  <li>No EmagreceDU, vá em <b>Ajustes → Health Connect → Conectar</b> e marque peso, gordura corporal, passos e sono.</li>
+  <li>Pronto: o app sincroniza sempre que você o abre e, enquanto ele está aberto, a cada 30 minutos. Em <b>Sincronizar</b> dá para escolher 15 minutos, 1 hora ou só ao abrir. Para sincronizar na hora, use <b>Sincronizar agora</b>.</li>
+</ol>
+<p>No Android 13 ou anterior, o Health Connect é um app separado: se o botão avisar que ele não está disponível, instale <b>Health Connect</b> pela Play Store.</p>
+
+<h3>Widget e atalhos</h3>
+<ul>
+  <li><b>Widget:</b> em Ajustes → Widget e atalhos → <b>Adicionar widget à tela inicial</b> (ou pressione e segure a tela inicial → Widgets → EmagreceDU). Ele mostra o mostrador de proteína, as calorias, a medicação e o dia do ciclo, a água (com a barra) e os passos do dia; o botão redondo <b>+</b> registra um copo sem abrir o app. Em células altas (como no One UI) ele usa o espaço com o mostrador maior, a próxima aplicação no chip da medicação e dois botões: <b>+ copo de água</b> e <b>Registrar refeição</b>. Redimensionado para 2×2 fica só o mostrador com o botão. Há mais dois widgets: <b>EmagreceDU · água</b> (1×1: total do dia; um toque registra um copo) e <b>EmagreceDU · medicação</b> (2×2: dia do ciclo, dose e próxima aplicação; toque abre a aba Saúde).</li>
+  <li><b>Atalhos:</b> pressione e segure o ícone do app para <b>+ 1 copo</b>, <b>Refeição</b>, <b>Peso</b> e <b>Código</b>. Dá para arrastar um atalho para a tela inicial.</li>
+  <li><b>Compartilhar com o app:</b> na galeria ou no WhatsApp, compartilhe a foto de um prato e escolha <b>EmagreceDU</b>; ela chega pronta para a IA analisar.</li>
+</ul>
+
+<h3>Voz e código de barras</h3>
+<p>Na aba Hoje, <b>🎤 Falar</b> abre o reconhecimento de voz do Google: diga, por exemplo, "duzentos gramas de frango grelhado e uma colher de arroz", confira o texto e toque em Registrar. <b>Código de barras</b> abre o leitor do Google (na primeira vez ele pode baixar um componente rápido).</p>
+
+<h3>Bloqueio com digital</h3>
+<p>Em Ajustes → Privacidade, ligue <b>Bloquear o app com digital ou senha do celular</b>. O diário fica coberto quando você sai do app e pede a digital (ou o rosto, ou a senha da tela) ao voltar depois de 30 segundos.</p>
+
+<h3>Backup automático</h3>
+<ul>
+  <li>O app mantém uma <b>cópia interna</b> de tudo, que entra no backup do Google do seu celular (Configurações → Google → Backup). Ao reinstalar ou trocar de celular com a mesma conta Google, ela volta e o app restaura os dados sozinho.</li>
+  <li>Uma vez por semana, ele também salva um <b>arquivo de backup</b> em <b>Documentos/EmagreceDU</b> (guarda os 5 mais recentes).</li>
+  <li><b>Exportar backup</b> abre o menu de compartilhar: mande para o Google Drive, e-mail ou WhatsApp.</li>
+</ul>
+<div class="box tip"><b>Recomendação</b>Mesmo com tudo automático, exporte um backup para o Drive de vez em quando. É a garantia que não depende do celular.</div>
+
+<h2 id="backup">10. Backup e troca de celular</h2>
+<div class="box warn"><b>Seus dados ficam só no seu aparelho</b>Não existe conta nem servidor. Se você trocar de celular, limpar os dados do navegador ou desinstalar o app sem backup, os dados se perdem.</div>
+<ol class="steps">
+  <li>Em <b>Ajustes → Backup e restauração</b>, toque em <b>Exportar backup</b>. Um arquivo <code>emagrecedu-backup-AAAA-MM-DD.json</code> vai para a pasta Downloads, com tudo, inclusive as fotos.</li>
+  <li>Guarde o arquivo em um lugar seguro (Google Drive, e-mail para você mesmo).</li>
+  <li>No aparelho novo, abra o app e toque em <b>Importar meu backup</b> (ou em Metas → <b>Importar backup</b>) e escolha o arquivo.</li>
+  <li>O app mostra o resumo (dias, refeições, pesagens, fotos), importa, reinicia e confere se a contagem bateu.</li>
+</ol>
+<p>O app lembra você de fazer backup a cada 30 dias.</p>
+<h3>Perfis</h3>
+<p>Em <b>Ajustes → Perfis</b>, mais de uma pessoa pode usar o mesmo celular: cada perfil tem o próprio diário, metas, fotos e backups, separados por completo. "Criar e abrir" faz o cadastro inicial do novo perfil; o botão Abrir troca; o × remove um perfil secundário (faça backup antes). Lembretes e widgets mostram o perfil aberto; a chave da IA e o bloqueio valem para o aparelho.</p>
+<h3>Google Drive (automático)</h3>
+<p>Em <b>Ajustes → Backup e restauração → Google Drive</b>, toque em <b>Conectar ao Google Drive</b> e escolha a conta. O app guarda o backup completo (com as fotos) numa pasta oculta do seu Drive que só o EmagreceDU vê: uma vez por semana, sozinho, e sempre que você tocar em <b>Enviar agora</b>. Ficam os 8 mais recentes. Para restaurar (ou no celular novo), conecte a mesma conta, toque em <b>Ver backups no Drive</b> e em <b>Restaurar</b>. Para revogar o acesso: conta Google → Segurança → Apps de terceiros. Se a seção disser que o Drive "ainda não está ativo nesta versão", é porque o app ainda não foi cadastrado no Google (uma etapa do desenvolvedor).</p>
+
+<h2 id="privacidade">11. Privacidade</h2>
+<ul>
+  <li>Tudo o que você registra fica no seu aparelho (no navegador, na versão web; no armazenamento do app, no Android).</li>
+  <li>Só sai do aparelho: o texto ou a foto que você manda para a IA (direto para o Google, com a sua chave) e o número do código de barras consultado no Open Food Facts.</li>
+  <li>O app não tem anúncios, rastreadores nem coleta de dados.</li>
+</ul>
+<p>Detalhes, incluindo Health Connect e permissões do app Android, na <a href="privacidade.html">política de privacidade</a>.</p>
+
+<h2 id="problemas">12. Problemas comuns</h2>
+<table>
+  <tr><th>Mensagem</th><th>O que fazer</th></tr>
+  <tr><td>"Para usar a IA, cadastre sua chave"</td><td>Siga o <a href="#chave">passo a passo da chave</a>.</td></tr>
+  <tr><td>"A chave do Gemini foi recusada"</td><td>Copie a chave de novo, inteira. Se você restringiu a chave, confira o endereço do app nas restrições.</td></tr>
+  <tr><td>"Limite de uso do Gemini atingido"</td><td>Espere um minuto. No plano gratuito há limite por minuto e por dia.</td></tr>
+  <tr><td>"Modelo do Gemini não encontrado"</td><td>Deixe o campo Modelo em branco para usar o padrão.</td></tr>
+  <tr><td>"Sem conexão"</td><td>A IA e o código de barras precisam de internet. O resto funciona offline.</td></tr>
+  <tr><td>Produto não encontrado no código de barras</td><td>Tire uma foto do rótulo com o botão Foto: a IA lê a tabela nutricional.</td></tr>
+  <tr><td>Aparece "Nova versão disponível"</td><td>Toque em Atualizar. Seus dados não são afetados.</td></tr>
+</table>
+
+<div class="box warn"><b>Aviso</b>O EmagreceDU é uma ferramenta de registro e acompanhamento. Não faz diagnóstico, não prescreve e não substitui seu médico, nutricionista ou farmacêutico. As estimativas da IA e da tabela são aproximadas. Em caso de sintomas graves, procure atendimento (SAMU 192).</div>
+
+<a class="back" href="./">Voltar para o app</a>
+<footer>EmagreceDU</footer>
+</main>
+</body>
+</html>

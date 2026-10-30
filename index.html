@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EmagreceDU · Diário de Bordo</title>
+<meta name="description" content="Diário de emagrecimento: proteína, hidratação, medicação, sintomas, medidas e relatórios para o médico. Os dados ficam no seu aparelho.">
+<meta name="theme-color" content="#1E241E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="EmagreceDU">
+<style>
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:200 800;font-display:swap;src:url(vendor/fonts/bricolage-grotesque-latin-wght-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:400;font-display:swap;src:url(vendor/fonts/dm-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:500;font-display:swap;src:url(vendor/fonts/dm-sans-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:600;font-display:swap;src:url(vendor/fonts/dm-sans-latin-600-normal.woff2) format("woff2")}
+</style>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="app-shell">
+<aside class="app-sidebar" aria-label="Menu">
+  <nav class="app-nav" id="appNav" role="tablist" aria-label="Abas do app">
+    <div class="sidebar-brand" aria-hidden="true">
+      <b>EmagreceDU</b>
+      <small>Diário de bordo</small>
+    </div>
+    <button role="tab" aria-selected="true" data-tab="hoje"><svg viewBox="0 0 24 24"><path d="M4 20h16M6 20V9l6-5 6 5v11"/><path d="M10 20v-6h4v6"/></svg><span>Hoje</span></button>
+    <button role="tab" aria-selected="false" data-tab="saude"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-5 3 10 2-7 2 4h5"/></svg><span>Saúde</span></button>
+    <button type="button" class="nav-quick-add" id="quickAddBtn" aria-label="Registrar refeição" title="Registrar refeição"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="nav-quick-lbl">Registrar refeição</span></button>
+    <button role="tab" aria-selected="false" data-tab="rel"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg><span>Relatório</span></button>
+    <button role="tab" aria-selected="false" data-tab="peso"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 12l3-4M9 8h6"/></svg><span>Corpo</span></button>
+    <button role="tab" aria-selected="false" data-tab="metas"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span>Metas</span></button>
+  </nav>
+</aside>
+<main class="wrap">
+  <div class="top">
+    <h1 id="appTitle">EmagreceDU</h1>
+    <button class="theme" id="gearBtn" aria-label="Ajustes" title="Ajustes"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+    <div class="datenav" id="datenav">
+      <button id="prev" aria-label="Dia anterior">‹</button>
+      <span id="dateLbl" role="button" tabindex="0" title="Voltar para hoje">—</span>
+      <button id="next" aria-label="Próximo dia">›</button>
+    </div>
+  </div>
+  <div class="status" id="status">Carregando…</div>
+
+  <!-- HOJE -->
+  <section id="tab-hoje">
+    <div class="gauge bento-hero">
+      <div class="bento-grid">
+        <div class="bento-tile bento-kcal meter" id="mK">
+          <div class="bento-head">
+            <span class="bento-kicker">Calorias</span>
+          </div>
+          <div class="bento-main">
+            <b id="kVal">0</b>
+            <small id="kGoal">kcal</small>
+            <div class="ktrack" aria-hidden="true"><i id="kBar"></i></div>
+          </div>
+          <span class="bento-pill" id="kRem"></span>
+        </div>
+        <div class="bento-tile bento-prot">
+          <div class="bento-head">
+            <span class="bento-kicker">Proteína</span>
+          </div>
+          <div class="dial">
+            <svg viewBox="0 0 150 84" aria-hidden="true"><path class="ring" d="M12 78 A63 63 0 0 1 138 78"/><path class="fill" id="pArc" d="M12 78 A63 63 0 0 1 138 78" stroke-dasharray="198" stroke-dashoffset="198"/></svg>
+            <div>
+              <div class="main"><span class="big" id="pVal">0</span><span class="of" id="pGoal">/ 140 g</span></div>
+              <div class="lbl" id="pLbl">proteína no dia</div>
+            </div>
+          </div>
+          <div class="track"><i id="pBar" style="width:0"></i></div>
+        </div>
+        <div class="bento-tile bento-water">
+          <div class="meter bento-water-main" id="mW">
+            <div class="bento-head">
+              <span class="bento-kicker">Água</span>
+            </div>
+            <b id="wVal">0</b>
+            <small id="wGoal">ml água</small>
+            <div class="ktrack" aria-hidden="true"><i id="wBar"></i></div>
+          </div>
+          <div class="meter bento-sod-sub" id="mS">
+            <span class="bento-kicker">Sódio</span>
+            <div class="bento-sod-val"><b id="sVal">0</b> <small id="sGoal">mg sódio</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="plan" id="plan"></div>
+      <button class="wbadge" id="wbadge" hidden></button>
+    </div>
+    <div class="omnibox" id="omnibox">
+      <button type="button" class="omnibox-trigger" id="omniboxBtn" aria-haspopup="dialog" aria-controls="mealSheetModal">
+        <svg class="omnibox-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span class="omnibox-txt">O que você comeu ou bebeu?</span>
+      </button>
+      <div class="omnibox-acts">
+        <button type="button" class="omnibox-act" id="omniCamBtn" aria-label="Registrar por foto" title="Foto do prato">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-2h6l2 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        </button>
+        <button type="button" class="omnibox-act" id="omniBcBtn" aria-label="Ler código de barras" title="Código de barras">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6v12M8 6v12M11 6v12M14 6v12M17 6v12M20 6v12"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="banners"></div>
+
+    <div class="water">
+      <button id="addWater">Água<small>+250 ml</small></button>
+      <button id="addCoffee">Café<small>com pedágio</small></button>
+      <button id="addCoffeeNo">Café<small>sem pedágio</small></button>
+    </div>
+    <div class="quick">
+      <span id="cups" role="button" tabindex="0"></span>
+      <button id="undoWater" aria-label="Desfazer último copo">desfazer copo</button>
+    </div>
+    <div class="quick">
+      <span id="snackInfo"></span>
+      <button id="snackOpen">+ belisco</button>
+    </div>
+    <div class="quick">
+      <span id="hardInfo">Enjoo ou sem fome hoje?</span>
+      <button id="hardBtn">Modo dia difícil</button>
+    </div>
+    <div id="meals"></div>
+    <div class="cups" style="margin-top:10px">Toque em qualquer item para editar.</div>
+
+    <div class="log" style="margin-top:18px">
+      <label for="notes">Observações do dia</label>
+      <textarea id="notes" placeholder="Ex.: evento social, dormi mal, dia de muito estresse"></textarea>
+      <div class="cups" id="notesSaved" style="margin:4px 0 0"></div>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <button class="btn ghost" id="copy">Copiar resumo do dia</button>
+    </div>
+    <textarea class="copybox" id="copyBox" hidden readonly></textarea>
+  </section>
+
+
+  <!-- SAÚDE -->
+  <section id="tab-saude" hidden>
+    <div class="card" id="mjCard">
+      <h2 id="mjTitle">Medicação</h2>
+      <div class="mj"><span class="big" id="mjDay">—</span><span class="sub" id="mjSub">Registre a primeira aplicação</span></div>
+      <div class="alert" id="mjAlert" hidden></div>
+      <div class="grid2" style="margin-top:12px">
+        <select class="sel" id="mjDose" aria-label="Dose em mg">
+          <option value="2.5">2,5 mg</option><option value="5">5 mg</option><option value="7.5">7,5 mg</option><option value="10">10 mg</option><option value="12.5">12,5 mg</option><option value="15">15 mg</option>
+        </select>
+        <select class="sel" id="mjSite" aria-label="Local da aplicação">
+          <option>Abdômen direito</option><option>Abdômen esquerdo</option><option>Coxa direita</option><option>Coxa esquerda</option><option>Braço direito</option><option>Braço esquerdo</option>
+        </select>
+        <button class="btn full" id="mjAdd">Registrar aplicação neste dia</button>
+      </div>
+      <div class="syr" id="syr" hidden>
+        <div class="ui"><b id="syrUI">—</b><span id="syrTxt"></span></div>
+        <svg id="syrSvg" viewBox="0 0 520 70" aria-hidden="true"></svg>
+        <div class="vial" id="syrVial"></div>
+        <div class="alert" id="syrAlert" hidden></div>
+        <div class="cups" style="margin:8px 0 0">O cálculo só converte a dose prescrita para a seringa. Confira sempre o rótulo do frasco e, na dúvida, confirme com o farmacêutico.</div>
+      </div>
+      <div class="cups" id="syrOff" style="margin:10px 0 0">Para ver quanto puxar na seringa, cadastre o frasco e a seringa na aba Metas.</div>
+      <div id="mjList" style="margin-top:8px"></div>
+    </div>
+
+    <div class="card">
+      <h2>Remédios</h2>
+      <div id="medChecks"></div>
+    </div>
+
+    <div class="card">
+      <h2>Sono e fome</h2>
+      <div class="wb"><b>Qualidade do sono</b><div class="scale" id="scSleep"></div><div class="scale-l"><span>1 · péssimo</span><span>5 · ótimo</span></div></div>
+      <div class="wb"><b>Horas dormidas</b><input class="minput" id="sleepH" type="number" step="0.5" inputmode="decimal" placeholder="Ex.: 7,5" style="max-width:140px"></div>
+      <div class="wb"><b>Fome ao longo do dia</b><div class="scale" id="scHunger"></div><div class="scale-l"><span>1 · nenhuma</span><span>5 · muita</span></div></div>
+      <div class="wb" style="margin-bottom:0"><b>Humor</b><div class="scale" id="scMood"></div><div class="scale-l"><span>1 · muito para baixo</span><span>5 · ótimo</span></div></div>
+      <div class="alert" id="moodAlert" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>Sintomas e intestino</h2>
+      <div class="chips" id="symChips"></div>
+      <div class="cups" style="margin:12px 0 6px">Sinais de alerta</div>
+      <div class="chips red" id="redChips"></div>
+      <div class="alert red" id="redAlert" hidden></div>
+      <div class="row" style="margin-top:12px">
+        <button class="chip good" id="bowel" aria-pressed="false">Evacuei neste dia</button>
+      </div>
+      <div class="cups" id="bowelInfo" style="margin:8px 0 0"></div>
+      <div class="alert" id="gutAlert" hidden></div>
+      <div class="quick" style="margin-top:10px;padding:0">
+        <span id="alcInfo">Álcool: 0 doses hoje</span>
+        <span style="flex:none;display:flex;gap:6px"><button id="alcMinus" aria-label="Remover dose">−</button><button id="alcPlus">+ dose</button></span>
+      </div>
+      <div class="cups" style="margin:4px 0 0">1 dose = 1 lata de cerveja, 1 taça de vinho ou 1 dose de destilado.</div>
+      <div class="alert" id="alcAlert" hidden></div>
+    </div>
+
+    <div class="card fold" id="vitCard">
+      <details><summary><h2>Pressão e pulso</h2><span class="foldsum" id="vitSum"></span></summary>
+      <div class="vit">
+        <input class="minput" id="vSys" type="number" inputmode="numeric" placeholder="Sist.">
+        <input class="minput" id="vDia" type="number" inputmode="numeric" placeholder="Diast.">
+        <input class="minput" id="vHr" type="number" inputmode="numeric" placeholder="Pulso">
+        <input class="minput" id="vGlu" type="number" inputmode="numeric" placeholder="Glic.">
+      </div>
+      <div class="row" style="margin-top:8px"><button class="btn" id="vAdd">Registrar medição</button></div>
+      <div id="vList" style="margin-top:6px"></div>
+      <div class="alert" id="vAlert" hidden></div>
+      <p class="note">Meça sentado, após 5 min de repouso, de preferência de manhã antes dos remédios. Glicemia é opcional (só se você mede).</p>
+      </details>
+    </div>
+
+    <div class="card fold" id="sbCard">
+      <details><summary><h2>Risco de apneia do sono (STOP-Bang)</h2><span class="foldsum" id="sbSum"></span></summary>
+      <div class="sb" id="sbForm"></div>
+      <div class="sbres" id="sbRes"></div>
+      <p class="note" id="sbNote"></p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>Exercícios</h2>
+      <div class="grid2">
+        <select class="sel" id="exType" aria-label="Tipo de exercício">
+          <option>Caminhada</option><option>Musculação</option><option>Bicicleta</option><option>Esteira</option><option>Natação / hidro</option><option>Alongamento</option><option>Outro</option>
+        </select>
+        <input class="minput" id="exMin" type="number" inputmode="numeric" placeholder="minutos">
+        <select class="sel" id="exInt" aria-label="Intensidade"><option>Leve</option><option selected>Moderada</option><option>Intensa</option></select>
+        <input class="minput" id="exSteps" type="number" inputmode="numeric" placeholder="passos (opcional)">
+        <button class="btn full" id="exAdd">Registrar exercício</button>
+      </div>
+      <div id="exList" style="margin-top:8px"></div>
+      <div class="cups" id="exWeek" style="margin:10px 0 0"></div>
+    </div>
+  </section>
+
+
+  <!-- RELATÓRIO -->
+  <section id="tab-rel" hidden>
+    <div class="seg" id="rangeSeg">
+      <button data-n="7" aria-pressed="true">7 dias</button><button data-n="14" aria-pressed="false">14 dias</button><button data-n="30" aria-pressed="false">30 dias</button><button data-n="90" aria-pressed="false">90 dias</button>
+    </div>
+    <div class="status" id="relStatus" hidden></div>
+
+    <h2 class="sec" style="margin-top:4px">Nutrição</h2>
+    <div class="kpis" id="kNut"></div>
+    <div class="card" style="margin-top:10px"><h2>Proteína por dia</h2><div class="bars" id="cProt"></div><div class="legend">Linha tracejada: meta diária</div></div>
+    <div class="card"><h2>Calorias por dia</h2><div class="bars" id="cKcal"></div></div>
+    <div class="card"><h2>Sódio por dia</h2><div class="bars" id="cSod"></div><div class="legend">Linha tracejada: limite diário</div></div>
+
+    <h2 class="sec">Corpo e saúde</h2>
+    <div class="kpis" id="kBody"></div>
+    <div class="card" style="margin-top:10px"><h2>Sintomas no período</h2><div id="symList"></div></div>
+    <div class="card"><h2>Fome e sintomas por dia do ciclo</h2><div id="cycleList"></div><div class="legend">Dia 1 = dia da aplicação da medicação semanal</div></div>
+
+    <div class="card">
+      <h2>Análise do período</h2>
+      <div class="row" style="margin-top:0;flex-wrap:wrap">
+        <button class="btn" id="aiCoach">Feedback do parceiro</button>
+        <button class="btn ghost" id="aiDoc">Relatório para o médico</button>
+      </div>
+      <div class="thinking" id="aiThinking" hidden>Analisando o período…</div>
+      <div class="ai" id="aiOut"></div>
+      <div class="row" id="aiActions" hidden><button class="btn ghost" id="aiCopy">Copiar texto</button></div>
+    </div>
+    <div class="row" style="flex-wrap:wrap"><button class="btn" id="consultBtn">Modo consulta</button><button class="btn ghost" id="pdf">Baixar relatório em PDF</button><button class="btn ghost" id="csv">Baixar planilha (CSV)</button></div>
+    <div class="cups" id="pdfMsg" style="margin:8px 0 0"></div>
+  </section>
+
+  <!-- PESO -->
+  <section id="tab-peso" hidden>
+    <div class="log">
+      <label for="wIn">Nova pesagem</label>
+      <div class="wform">
+        <input id="wIn" type="number" step="0.1" inputmode="decimal" placeholder="Peso (kg)">
+        <input id="waistIn" type="number" step="0.5" inputmode="decimal" placeholder="Cintura (cm)">
+      </div>
+      <div class="cups" style="margin:6px 0 0">Cintura: ponto médio entre a última costela e o osso do quadril (padrão OMS).</div>
+      <div class="wform" style="margin-top:8px">
+        <input id="wDate" type="date" aria-label="Data da pesagem">
+        <button class="btn" id="wAdd">Salvar</button>
+      </div>
+    </div>
+    <div class="wstats">
+      <div class="meter"><b id="wNow">—</b><small>atual (kg)</small></div>
+      <div class="meter"><b id="wLost">—</b><small>perdidos (kg)</small></div>
+      <div class="meter"><b id="wBmi">—</b><small>IMC</small></div>
+      <div class="meter"><b id="wWaist">—</b><small>cintura (cm)</small></div>
+      <div class="meter"><b id="wWeek">—</b><small>ritmo (kg/sem)</small></div>
+      <div class="meter"><b id="wDays">—</b><small>dias de projeto</small></div>
+      <div class="meter"><b id="wAvg7">—</b><small>tendência (kg)</small></div>
+      <div class="meter"><b id="wPct">—</b><small>% do peso inicial perdido</small></div>
+      <div class="meter"><b id="wToGoal">—</b><small>faltam p/ a meta (kg)</small></div>
+      <div class="meter"><b id="wEta">—</b><small>previsão da meta</small></div>
+    </div>
+    <div class="goalbox" id="goalbox">
+      <div class="hd"><b id="gPct">—</b><span id="gTxt"></span></div>
+      <svg id="gSvg" viewBox="0 0 520 64" aria-label="Linha do peso inicial até o peso ideal"></svg>
+      <div class="legend"><span><i style="background:var(--prot)"></i>percorrido</span><span><i style="background:var(--water)"></i>sua meta</span><span><i style="background:var(--prot-soft);border:1px solid var(--prot)"></i>faixa saudável</span></div>
+      <div class="ideal" id="gIdeal"></div>
+    </div>
+    <div class="chartbox">
+      <div class="seg" id="chMode"><button data-m="peso" aria-pressed="true">Peso</button><button data-m="ritmo" aria-pressed="false">Ritmo</button><button data-m="medidas" aria-pressed="false">Medidas</button><button data-m="cruzar" aria-pressed="false">Cruzar</button></div>
+      <div class="chopts">
+        <div class="seg" id="chRange"><button data-r="30" aria-pressed="false">30 dias</button><button data-r="90" aria-pressed="false">90 dias</button><button data-r="0" aria-pressed="true">Tudo</button></div>
+        <select class="sel" id="chCross" aria-label="Cruzar o peso com" hidden><option value="sodium">com Sódio</option><option value="kcal">com Calorias</option><option value="protein">com Proteína</option><option value="water">com Água</option></select>
+      </div>
+      <div class="ratecards" id="rateCards"></div>
+      <div class="chart" id="chart"></div>
+      <div id="chartCap"></div>
+    </div>
+    <div class="wlist" id="wlist"></div>
+
+    <h2 class="sec">Medidas</h2>
+    <div class="card">
+      <div class="cups" style="margin:0 0 10px">Cintura a cada 2 semanas; as outras uma vez por mês. Sempre em jejum, de manhã, fita firme sem apertar.</div>
+      <div class="grid2">
+        <input class="minput" id="mPesc" type="number" step="0.5" inputmode="decimal" placeholder="Pescoço (cm)">
+        <input class="minput" id="mQuad" type="number" step="0.5" inputmode="decimal" placeholder="Quadril (cm)">
+        <input class="minput" id="mBraco" type="number" step="0.5" inputmode="decimal" placeholder="Braço (cm)">
+        <input class="minput" id="mCoxa" type="number" step="0.5" inputmode="decimal" placeholder="Coxa (cm)">
+        <input class="minput" id="mDate" type="date" aria-label="Data das medidas">
+        <button class="btn" id="mSave">Salvar medidas</button>
+      </div>
+      <div class="wstats" style="margin:14px 0 0">
+        <div class="meter"><b id="bfPct">—</b><small>gordura estimada</small></div>
+        <div class="meter"><b id="whr">—</b><small>cintura ÷ quadril</small></div>
+        <div class="meter"><b id="leanKg">—</b><small>massa magra (kg)</small></div>
+      </div>
+      <div class="cups" id="bfNote" style="margin:8px 0 0"></div>
+      <div class="mchart" id="mChart"></div>
+      <div id="mList" style="margin-top:6px"></div>
+    </div>
+
+    <h2 class="sec">Bioimpedância</h2>
+    <div class="card">
+      <div class="cups" style="margin:0 0 10px">A cada 1–2 meses, sempre nas mesmas condições: jejum, bexiga vazia, sem exercício nas 12 h anteriores.</div>
+      <div class="grid2">
+        <input class="minput" id="biFat" type="number" step="0.1" inputmode="decimal" placeholder="Gordura (%)">
+        <input class="minput" id="biMuscle" type="number" step="0.1" inputmode="decimal" placeholder="Massa muscular (kg)">
+        <input class="minput" id="biVisc" type="number" step="0.5" inputmode="decimal" placeholder="Gordura visceral (nível)">
+        <input class="minput" id="biWater" type="number" step="0.1" inputmode="decimal" placeholder="Água corporal (%)">
+        <input class="minput" id="biDate" type="date" aria-label="Data da bioimpedância">
+        <button class="btn" id="biSave">Salvar exame</button>
+      </div>
+      <div id="biList" style="margin-top:8px"></div>
+    </div>
+
+    <h2 class="sec">Fotos de progresso</h2>
+    <div class="card">
+      <div class="row" style="margin-top:0"><button class="btn" id="phAddF">+ Foto frontal</button><button class="btn ghost" id="phAddL">+ Foto lateral</button><input type="file" id="phFile" accept="image/*" hidden></div>
+      <div class="thinking" id="phBusy" hidden>Enviando foto…</div>
+      <div class="cups" id="phMsg" style="margin:8px 0 0"></div>
+      <div id="phHero"></div>
+      <div class="phsel" id="phSel" hidden><select class="sel" id="phA" aria-label="Sessão de antes"></select><select class="sel" id="phB" aria-label="Sessão de agora"></select></div>
+      <div class="row" id="phAIRow" hidden><button class="btn" id="phAI">Análise da IA: antes × agora</button></div>
+      <div class="thinking" id="phAIThinking" hidden>Analisando as fotos…</div>
+      <div class="ai" id="phAIOut"></div>
+      <div class="tl" id="phTL"></div>
+      <details><summary>Como tirar fotos comparáveis</summary>
+        <ul class="note" style="padding-left:18px;margin-top:6px">
+          <li>Sempre no mesmo dia da semana, de manhã, em jejum, depois do banheiro.</li>
+          <li>Mesmo lugar, mesma luz, celular na mesma altura (apoie numa prateleira ou peça para alguém tirar) e mesma distância.</li>
+          <li>Mesma roupa: sunga ou bermuda, sem camisa.</li>
+          <li><b>Frontal:</b> de frente, pés na largura do quadril, braços levemente afastados, postura natural, sem encolher a barriga.</li>
+          <li><b>Lateral:</b> lado esquerdo virado para a câmera, braços para a frente ou cruzados no peito, olhando reto.</li>
+        </ul>
+      </details>
+      <p class="note">As fotos ficam guardadas neste app. Quem receber o link do app também consegue vê-las, então não compartilhe este app.</p>
+    </div>
+
+    <h2 class="sec">Exames de sangue</h2>
+    <div class="card">
+      <div class="grid2">
+        <select class="sel full" id="labName" aria-label="Exame"></select>
+        <input class="minput" id="labOtherName" placeholder="Nome do exame" hidden>
+        <input class="minput" id="labOtherUnit" placeholder="Unidade" hidden>
+        <input class="minput" id="labVal" type="number" step="any" inputmode="decimal" placeholder="Resultado">
+        <input class="minput" id="labDate" type="date" aria-label="Data do exame">
+        <input class="minput" id="labMin" type="number" step="any" inputmode="decimal" placeholder="Ref. mínima (opcional)">
+        <input class="minput" id="labMax" type="number" step="any" inputmode="decimal" placeholder="Ref. máxima (opcional)">
+        <button class="btn full" id="labAdd">Registrar resultado</button>
+      </div>
+      <div id="labList" style="margin-top:8px"></div>
+      <h2 class="sec" style="font-size:1rem;margin-top:16px">Painel recomendado e última coleta</h2>
+      <div class="labplan" id="labPlan"></div>
+      <p class="note">Sugestão de cadência para quem está em déficit grande com GLP-1: linha de base, 3 meses e 6 meses; depois a cada 6 meses. Lipase só se houver dor abdominal. Confirme a lista com seu médico.</p>
+      <p class="note">Copie a faixa de referência do próprio laudo: ela muda de laboratório para laboratório. Resultados fora da faixa ficam em vermelho.</p>
+    </div>
+  </section>
+
+  <!-- METAS -->
+  <section id="tab-metas" hidden>
+    <div class="log">
+      <h2 class="sec" style="margin-top:0">Perfil</h2>
+      <div class="set">
+        <label for="pName">Nome</label><input id="pName" type="text" autocomplete="given-name">
+        <label for="pSex">Referência para os cálculos</label><select class="sel" id="pSex"><option value="F">Feminina</option><option value="M">Masculina</option></select>
+        <label for="pPron">Como o app fala com você</label><select class="sel" id="pPron"><option value="neutro">Sem gênero</option><option value="ela">No feminino</option><option value="ele">No masculino</option></select>
+        <label for="gBirth">Data de nascimento</label><input id="gBirth" type="date">
+        <label for="gHeight">Altura (m)</label><input id="gHeight" type="number" step="0.01" inputmode="decimal">
+        <label for="gStart">Peso inicial (kg)</label><input id="gStart" type="number" step="0.1" inputmode="decimal">
+        <label for="gGoal">Minha meta de peso (kg)</label><input id="gGoal" type="number" step="0.1" inputmode="decimal">
+      </div>
+      <p class="note">As fórmulas de gordura corporal, peso ideal, limites de cintura e gasto energético foram calibradas em dois grupos de referência. Escolha a que seu médico ou nutricionista indicar; pessoas em terapia hormonal podem precisar de uma referência diferente da atribuída ao nascer. Isso não define quem você é: só ajusta as contas.</p>
+
+      <h2 class="sec">Metas diárias</h2>
+      <div class="set">
+        <label for="gProt">Proteína (g/dia)</label><input id="gProt" type="number" inputmode="numeric">
+        <label for="gKcal">Calorias (kcal/dia)</label><input id="gKcal" type="number" inputmode="numeric">
+        <label for="gSod">Sódio máx. (mg/dia)</label><input id="gSod" type="number" inputmode="numeric">
+        <label for="gWater">Água (ml/dia)</label><input id="gWater" type="number" inputmode="numeric">
+        <label for="gSteps">Passos (por dia)</label><input id="gSteps" type="number" inputmode="numeric" placeholder="7000">
+        <label for="gStepsAuto">Meta de passos adaptativa</label><select id="gStepsAuto" class="sel"><option value="">não</option><option value="1">sim: +5% quando bato 5 de 7 dias, −10% numa semana sem bater</option></select>
+        <label for="gToll">Pedágio de belisco</label><select id="gToll" class="sel"><option value="0">desligado</option><option value="1000">1.000 passos por belisco</option><option value="1500">1.500 passos por belisco</option><option value="2000">2.000 passos por belisco</option><option value="3000">3.000 passos por belisco</option></select>
+      </div>
+      <div class="row"><button class="btn ghost" id="sugGoals">Sugerir metas pelo meu perfil</button></div>
+      <div class="cups" id="sugMsg" style="margin:8px 0 0"></div>
+
+      <h2 class="sec">Minhas regras</h2>
+      <p class="note" style="margin-top:0">A IA usa estas regras para avaliar cada refeição e no botão "Posso comer?". Escreva do seu jeito, uma por linha.</p>
+      <textarea id="pRules" class="minput" aria-label="Minhas regras" style="min-height:130px;text-align:left"></textarea>
+      <div class="set" style="margin-top:10px">
+        <label for="pVol">Volume máx. por refeição (g)</label><input id="pVol" type="number" inputmode="numeric">
+      </div>
+
+      <h2 class="sec">Distribuição da proteína (%)</h2>
+      <div class="set" id="splitSet"></div>
+      <p class="note">O app usa estes percentuais para planejar quanto de proteína cabe em cada refeição e redistribui o que ficou faltando nas seguintes.</p>
+      <div class="row" style="margin-top:14px"><button class="btn" id="gSave">Salvar</button></div>
+
+      <h2 class="sec">Medicação para emagrecer</h2>
+      <p class="note" style="margin-top:0">Use o <b>princípio ativo</b> (está na caixa e na receita), não a marca. O app não cita marcas comerciais: a legislação sanitária restringe a divulgação de medicamentos sob prescrição.</p>
+      <div class="set">
+        <label for="pMed">Medicação</label>
+        <select class="sel" id="pMed"><option>Nenhuma</option><option>Semaglutida</option><option>Tirzepatida</option><option>Liraglutida</option><option>Dulaglutida</option><option>Retatrutida</option><option>Outro</option></select>
+        <label for="pMedName" id="pMedNameLbl">Nome do princípio ativo</label><input id="pMedName" type="text" placeholder="ex.: cagrilintida">
+        <label for="pMedPeriod">Frequência da aplicação</label>
+        <select class="sel" id="pMedPeriod"><option value="semanal">Semanal</option><option value="diario">Diária</option></select>
+        <label for="mjWeekday" id="mjWeekdayLbl">Dia fixo da aplicação</label>
+        <select class="sel" id="mjWeekday"><option value="0">Domingo</option><option value="1">Segunda</option><option value="2">Terça</option><option value="3">Quarta</option><option value="4">Quinta</option><option value="5">Sexta</option><option value="6">Sábado</option></select>
+        <label for="vialMg">Frasco: total de mg</label><input id="vialMg" type="number" step="0.1" inputmode="decimal" placeholder="ex.: 30">
+        <label for="vialMl">Frasco: volume (mL)</label><input id="vialMl" type="number" step="0.1" inputmode="decimal" placeholder="ex.: 3">
+        <label for="syrType">Seringa</label>
+        <select class="sel" id="syrType"><option value="100">1 mL (100 UI)</option><option value="50">0,5 mL (50 UI)</option><option value="30">0,3 mL (30 UI)</option></select>
+        <label for="vialOpened">Frasco atual aberto em</label><input id="vialOpened" type="date">
+        <label for="vialDays">Validade após abrir (dias)</label><input id="vialDays" type="number" inputmode="numeric" placeholder="ver rótulo">
+      </div>
+      <p class="note">Copie "mg" e "mL" exatamente como estão no rótulo do frasco (ex.: 30 mg / 3 mL). A calculadora só converte a dose que o seu médico prescreveu; confira sempre com o farmacêutico.</p>
+
+      <h2 class="sec">Outros medicamentos</h2>
+      <div id="medEdit"></div>
+      <div class="row"><button class="btn ghost" id="medNew">+ Adicionar medicamento</button></div>
+      <div class="set" style="margin-top:12px">
+        <label for="multiSel">Polivitamínico diário</label>
+        <select class="sel" id="multiSel"><option value="">Não informado</option><option value="sim">Tomo</option><option value="nao">Não tomo</option></select>
+      </div>
+
+      <div class="row" style="margin-top:14px"><button class="btn" id="gSave2">Salvar tudo</button></div>
+      <p class="note">Chave da IA, lembretes, Health Connect, aparência, backup e apoio ao projeto ficam em <b>Ajustes</b> (engrenagem no topo).</p>
+    </div>
+  </section>
+
+  <!-- AJUSTES (engrenagem no topo): configurações, separadas do plano em Metas -->
+  <section id="tab-ajustes" hidden>
+    <div class="log">
+      <div class="aj-list" id="ajList">
+        <h2 class="sec" style="margin-top:0">Ajustes</h2>
+        <button class="aj-row" data-aj="ia"><span class="ic">✦</span><span class="t"><b>Inteligência artificial</b><small id="ajIaSub">Chave do Gemini e modelo</small></span><span class="ch">›</span></button>
+        <button class="aj-row" data-aj="native" id="ajNativeRow" hidden><span class="ic">🔔</span><span class="t"><b>Lembretes, Health Connect e widget</b><small>Notificações, balança e passos, tela inicial, bloqueio</small></span><span class="ch">›</span></button>
+        <button class="aj-row" data-aj="aparencia"><span class="ic">◐</span><span class="t"><b>Aparência</b><small id="ajAparSub">Tema claro, escuro ou automático</small></span><span class="ch">›</span></button>
+        <button class="aj-row" data-aj="backup"><span class="ic">⤓</span><span class="t"><b>Backup e restauração</b><small id="ajBkSub">Exportar, importar e apagar dados</small></span><span class="ch">›</span></button>
+        <button class="aj-row" data-aj="perfis"><span class="ic">👥</span><span class="t"><b>Perfis</b><small id="ajPerfSub">Mais de uma pessoa no mesmo aparelho</small></span><span class="ch">›</span></button>
+        <button class="aj-row" data-aj="apoio"><span class="ic">♥</span><span class="t"><b>Apoie o projeto</b><small>Pague um café para o desenvolvedor</small></span><span class="ch">›</span></button>
+        <button class="aj-row" data-aj="sobre"><span class="ic">ⓘ</span><span class="t"><b>Sobre e ajuda</b><small id="ajSobreSub">Versão, manual e privacidade</small></span><span class="ch">›</span></button>
+      </div>
+      <section class="aj-panel" id="aj-ia" hidden>
+        <button class="aj-back" data-back>‹ Ajustes</button>
+        <h2 class="sec">Inteligência artificial (Gemini)</h2>
+      <p class="note" style="margin-top:0">A IA estima calorias e proteína pelo texto ou pela foto do prato, responde o "Posso comer?" e analisa as fotos de progresso. Ela usa a <b>sua</b> chave gratuita do Google AI Studio. <a class="helplink" href="manual.html#chave" target="_blank" rel="noopener">Como criar a chave</a></p>
+      <div class="grid2">
+        <input class="minput full" id="gemKey" type="password" placeholder="Chave da API do Google AI Studio" autocomplete="off" spellcheck="false">
+        <button class="btn ghost" id="gemShow">Mostrar</button>
+        <button class="btn ghost" id="gemTest">Testar conexão</button>
+        <input class="minput full" id="gemModel" list="gemModels" placeholder="Modelo (em branco: o app escolhe o melhor da sua conta)" spellcheck="false" autocomplete="off"><datalist id="gemModels"></datalist>
+      </div>
+      <div class="cups" id="gemStatus" style="margin:8px 0 0"></div>
+      <details class="note"><summary>Diagnóstico da IA (últimas chamadas)</summary><pre id="gemLog" style="white-space:pre-wrap;font-size:.78rem;margin:6px 0 0"></pre><button class="btn ghost" id="gemLogCopy" style="margin-top:6px">Copiar diagnóstico</button></details>
+      <p class="note">A chave fica guardada no cofre do Android (no app) ou só neste navegador (na versão web), e <b>não</b> vai nos arquivos de backup: se trocar de aparelho, cole a chave de novo. No plano gratuito, o Google pode usar o conteúdo enviado para melhorar os produtos dele; para fotos de corpo, considere ativar o faturamento na sua conta Google. Sem chave, o app funciona com a tabela de alimentos, código de barras e lançamento manual.</p>
+
+        <div class="row" style="margin-top:14px"><button class="btn" data-save>Salvar</button></div>
+      </section>
+      <section class="aj-panel" id="aj-native" hidden>
+        <button class="aj-back" data-back>‹ Ajustes</button>
+        <div id="ajNativeHost"></div>
+      </section>
+      <section class="aj-panel" id="aj-aparencia" hidden>
+        <button class="aj-back" data-back>‹ Ajustes</button>
+        <h2 class="sec">Aparência</h2>
+      <div class="set">
+        <label for="langSel">Idioma</label>
+        <select class="sel" id="langSel"><option value="auto">Automático (do celular)</option><option value="pt-BR">Português (Brasil)</option><option value="en">English</option><option value="es">Español</option></select>
+        <label for="themeSel">Tema</label>
+        <select class="sel" id="themeSel"><option value="auto">Automático (do celular)</option><option value="light">Claro</option><option value="dark">Escuro</option><option value="oled">Preto (tela OLED)</option></select>
+        <label for="colorsSel">Cores</label>
+        <select class="sel" id="colorsSel"><option value="marca">Do EmagreceDU (verde e terracota)</option><option value="sistema">Do sistema (Material You)</option><option value="personalizada">Personalizada</option></select>
+      </div>
+      <div id="seedRow" hidden>
+        <div class="cups" style="margin:8px 0 6px">Cor principal (o app gera a paleta clara e escura a partir dela):</div>
+        <div class="swatches" id="swatches" role="radiogroup" aria-label="Cor principal"></div>
+        <div class="seedrow" style="margin-top:8px"><input type="color" id="seedIn" value="#1E7F69" aria-label="Outra cor"><span class="cups" style="margin:0">Outra cor</span></div>
+      </div>
+      <div class="set" style="margin-top:10px">
+        <label for="heroSel">Topo do app</label>
+        <select class="sel" id="heroSel"><option value="navy">Escuro neutro (padrão)</option><option value="seed">Escuro na cor principal</option><option value="light">Claro na cor principal</option></select>
+        <label for="widgetColorsSel">Widgets</label>
+        <select class="sel" id="widgetColorsSel"><option value="1">Seguem as cores do app</option><option value="0">Sempre no escuro padrão</option></select>
+      </div>
+      <div class="cups" style="margin:8px 0 4px">Prévia:</div>
+      <div class="wprev" id="wPrev" aria-hidden="true"><div class="wprev-g"><i></i></div><div><b>faltam 68 g</b><span>de proteína · 900 de 1.300 kcal</span><div class="wprev-chips"><em class="w">1,2 L</em><em>6.432</em><em class="b">+</em></div></div></div>
+      <p class="note">"Do sistema" usa a cor do papel de parede no Android 12 ou mais recente; na versão web, usa a cor personalizada. As cores valem para o app e para os widgets da tela inicial.</p>
+
+        <div class="row" style="margin-top:14px"><button class="btn" data-save>Salvar</button></div>
+      </section>
+      <section class="aj-panel" id="aj-backup" hidden>
+        <button class="aj-back" data-back>‹ Ajustes</button>
+        <h2 class="sec">Backup e restauração</h2>
+      <p class="note" style="margin-top:0">Seus dados ficam só neste aparelho. Faça backup pelo menos uma vez por semana: se trocar de celular ou limpar os dados do navegador, é o backup que recupera tudo (inclusive as fotos).</p>
+      <div class="cups" id="bkInfo" style="margin:6px 0"></div>
+      <div class="row" style="flex-wrap:wrap">
+        <button class="btn" id="bkExport">Exportar backup</button>
+        <button class="btn ghost" id="bkImport">Importar backup</button>
+        <input type="file" id="bkFile" accept=".json,application/json" hidden>
+      </div>
+      <div class="cups" id="bkMsg" style="margin:8px 0 0"></div>
+      <div class="row" style="margin-top:14px"><button class="btn danger" id="wipeAll">Apagar todos os dados deste aparelho</button></div>
+
+
+      </section>
+      <section class="aj-panel" id="aj-perfis" hidden>
+        <button class="aj-back" data-back>‹ Ajustes</button>
+        <h2 class="sec">Perfis</h2>
+        <p class="note" style="margin-top:0">Cada perfil tem o próprio diário, metas, fotos e backups, separados por completo. Os lembretes e o widget mostram sempre o perfil que está aberto. A chave da IA e o bloqueio do app são do aparelho (valem para todos).</p>
+        <div id="profList"></div>
+        <div class="row" style="margin-top:10px;flex-wrap:wrap"><input class="minput" id="profName" placeholder="nome do novo perfil" maxlength="24" style="flex:1;min-width:160px"><button class="btn" id="profAdd">Criar e abrir</button></div>
+        <div class="cups" id="profMsg" style="margin:8px 0 0"></div>
+      </section>
+      <section class="aj-panel" id="aj-apoio" hidden>
+        <button class="aj-back" data-back>‹ Ajustes</button>
+        <h2 class="sec">Apoie o projeto</h2>
+        <div id="apoioBox"></div>
+      </section>
+      <section class="aj-panel" id="aj-sobre" hidden>
+        <button class="aj-back" data-back>‹ Ajustes</button>
+        <h2 class="sec">Sobre e ajuda</h2>
+      <div class="cups" id="diag" style="margin:0">Carregando…</div>
+      <details class="note" id="errBox"><summary>Registro de erros (<span id="errCount">0</span>)</summary>
+        <p style="margin:6px 0">Erros do app são guardados só neste aparelho, sem envio automático para ninguém. Se algo falhar, copie e mande junto com a descrição do problema.</p>
+        <div id="errSwRow"></div>
+        <pre id="errLog" style="white-space:pre-wrap;font-size:.75rem;max-height:200px;overflow:auto;margin:6px 0"></pre>
+        <div class="row" style="flex-wrap:wrap"><button class="btn ghost" id="errCopy">Copiar</button><button class="btn ghost" id="errShare">Compartilhar</button><button class="btn ghost" id="errClear">Limpar</button></div>
+      </details>
+      <p class="note"><a class="helplink" href="manual.html" target="_blank" rel="noopener">Manual do usuário</a> · Metas e cálculos são pontos de partida. Este app não substitui acompanhamento médico ou nutricional.</p>
+
+      </section>
+    </div>
+  </section>
+</main>
+
+</div>
+
+<!-- folha de refeição: fora do <main> para ficar acima da barra de abas -->
+<div class="meal-sheet" id="mealSheetModal" hidden>
+  <div class="meal-sheet-box log" role="dialog" aria-modal="true" aria-labelledby="mealSheetTitle">
+    <div class="meal-sheet-handle" aria-hidden="true"></div>
+    <div class="meal-sheet-hd">
+      <label for="food" id="mealSheetTitle">O que você comeu ou bebeu?</label>
+      <button type="button" class="meal-sheet-close" id="mealSheetClose" aria-label="Fechar">×</button>
+    </div>
+    <textarea id="food" placeholder="Ex.: 150 g de frango grelhado, 2 colheres de arroz e brócolis"></textarea>
+    <div class="row">
+      <select id="meal" aria-label="Refeição">
+        <option>Café da manhã</option><option>Almoço</option><option>Café da tarde</option><option>Jantar</option><option>Ceia</option><option>Beliscos</option>
+      </select>
+      <button class="btn ghost" id="camBtn" aria-label="Registrar por foto">📷 Foto</button>
+      <button class="btn ghost" id="bcBtn" aria-label="Ler código de barras">Código de barras</button>
+      <button class="btn ghost" id="checkBtn" title="Checar antes de comer">Posso comer?</button>
+      <button class="btn" id="send">Registrar</button>
+    </div>
+    <input type="file" id="camFile" accept="image/*" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none" tabindex="-1" aria-hidden="true">
+    <div class="photoPrev" id="camPrev" hidden><img id="camImg" alt="Foto do prato"><div><div class="cups" style="margin:0">Foto pronta. Se quiser, descreva algo acima (ex.: "frango, uns 120 g").</div><button id="camClear">Remover foto</button></div></div>
+    <div class="ask" id="ask" hidden></div>
+    <div class="recents" id="recentsBox" hidden><div class="cups" style="margin:0 0 6px">Repetir rápido (toque para lançar na refeição escolhida):</div><div class="chips" id="recents"></div></div>
+    <div class="thinking" id="thinking" hidden>Calculando macros…</div>
+    <div class="alert" id="alert" hidden></div>
+    <input type="file" id="bcFile" accept="image/*" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none" tabindex="-1" aria-hidden="true">
+    <details id="snackBox">
+      <summary>Beliscos rápidos (um toque registra)</summary>
+      <div class="chips" id="snackChips" style="margin-top:10px"></div>
+    </details>
+    <details id="tableBox">
+      <summary>Buscar na tabela de alimentos (funciona sem IA)</summary>
+      <input id="tSearch" class="minput" type="search" placeholder="Ex.: frango, arroz, ovo" autocomplete="off" style="margin-top:10px">
+      <div id="tResults"></div>
+      <div class="cups" style="margin:6px 0 0">Valores aproximados (base TACO e rótulos comuns). Toque no item depois de lançado para ajustar.</div>
+    </details>
+    <details>
+      <summary>Lançar valores manualmente</summary>
+      <div class="manual">
+        <input class="full" id="mName" placeholder="Alimento">
+        <input id="mKcal" type="number" inputmode="decimal" placeholder="kcal">
+        <input id="mProt" type="number" inputmode="decimal" placeholder="proteína (g)">
+        <input id="mSod" type="number" inputmode="decimal" placeholder="sódio (mg)">
+        <button class="btn ghost" id="mAdd">Adicionar</button>
+      </div>
+    </details>
+  </div>
+</div>
+
+<script src="vendor/jspdf.umd.min.js" defer></script>
+<script src="vendor/qrcode.js" defer></script>
+<script src="vendor/theme.js"></script>
+<script src="config.js"></script>
+<script src="i18n/en.js"></script>
+<script src="i18n/es.js"></script>
+<script src="i18n.js"></script>
+<script src="platform.js"></script>
+<script src="features.js"></script>
+<script src="support.js"></script>
+<script src="drive.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
