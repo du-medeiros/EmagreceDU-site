@@ -1,6 +1,6 @@
 /* EmagreceDU · lógica do app (extraída do index.html). Carrega depois de platform.js, features.js, support.js e drive.js. */
 const $ = id => document.getElementById(id);
-const APP_VERSION="1.12.0";
+const APP_VERSION="1.12.1";
 const DEFAULT_RULES="1. Proteína em todas as refeições principais (mínimo de 25 g).\n2. Comer devagar e parar ao sentir saciedade.\n3. Se houver estufamento, preferir vegetais cozidos e evitar frituras.\n4. Beber água ao longo do dia; um copo antes de cada café.";
 const DEFAULTS = {name:"", sex:"F", pronoun:"neutro", med:"Nenhuma", medPeriod:"semanal", medName:"", maxVol:300, rules:DEFAULT_RULES, protein:120, kcal:1500, sodium:2000, water:2500, stepsGoal:7000, snackToll:1500, start:0, height:0, goal:0, birth:"", meds:[], mjWeekday:6};
 function hasMed(){return !!settings.med&&settings.med!=="Nenhuma";}
@@ -674,7 +674,7 @@ function renderPhotos(){
   if(!sx.length){hero.innerHTML='<div class="empty">Tire a primeira dupla de fotos (frontal e lateral). É o registro que mais mostra resultado quando a balança trava.</div>';return;}
   if($("tab-peso")&&$("tab-peso").hidden)return;
   // selectors
-  const fill=(sel,def)=>{const cur=sel.value;sel.textContent="";sx.forEach(x=>{const o=document.createElement("option");o.value=x.date;o.textContent=fmtDate(x.date).replace(/^(Hoje|Ontem) /,"")+(sessStats(x).kg?" · "+sessStats(x).kg.toFixed(1)+" kg":"");sel.appendChild(o);});sel.value=sx.some(x=>x.date===cur)?cur:def;};
+  const fill=(sel,def)=>{const cur=sel.value;sel.textContent="";sx.forEach(x=>{const o=document.createElement("option");o.value=x.date;o.textContent=fmtDate(x.date).replace(/^(Hoje|Ontem) /,"")+(sessStats(x).kg?" · "+sessStats(x).kg.toFixed(1).replace(".",I18N.dsep)+" kg":"");sel.appendChild(o);});sel.value=sx.some(x=>x.date===cur)?cur:def;};
   if(sx.length>=2){fill($("phA"),sx[0].date);fill($("phB"),sx[sx.length-1].date);}
   const a=sx.length>=2?sx.find(x=>x.date===$("phA").value)||sx[0]:sx[0];const b=sx.length>=2?sx.find(x=>x.date===$("phB").value)||sx[sx.length-1]:null;
   const col=(sess,title)=>{const c=document.createElement("div");c.className="col";const h=document.createElement("h3");h.textContent=title;const sm=document.createElement("small");sm.textContent=fmtDate(sess.date).replace(/^(Hoje|Ontem) /,"");h.appendChild(sm);
@@ -1295,7 +1295,7 @@ function computeStats(){
     variacaoPeso:ws.length>1?Math.round((ws[ws.length-1].kg-ws[0].kg)*10)/10:null,
     variacaoCintura:wsW.length>1?Math.round((wsW[wsW.length-1].waist-wsW[0].waist)*10)/10:null,
     pesoInicialProjeto:settings.start, perdaTotal:weights.length?Math.round((settings.start-[...weights].sort((a,b)=>a.date<b.date?-1:1).pop().kg)*10)/10:null,
-    doseMedicacao:inj.length?inj.map(i=>i.date.slice(5)+": "+i.dose+" mg").join(", "):(mjStatus(to)?mjStatus(to).li.dose+" mg":null),
+    doseMedicacao:inj.length?inj.map(i=>i.date.slice(8)+"/"+i.date.slice(5,7)+": "+String(i.dose).replace(".",I18N.dsep)+" mg").join(", "):(mjStatus(to)?String(mjStatus(to).li.dose).replace(".",I18N.dsep)+" mg":null),
     sonoMedio:(()=>{const a=relDays.filter(d=>d.sleep).map(d=>d.sleep);return a.length?Math.round(avg(a)*10)/10:null;})(),
     horasSonoMedia:(()=>{const a=relDays.filter(d=>d.sleepH).map(d=>d.sleepH);return a.length?Math.round(avg(a)*10)/10:null;})(),
     fomeMedia:(()=>{const a=relDays.filter(d=>d.hunger).map(d=>d.hunger);return a.length?Math.round(avg(a)*10)/10:null;})(),
