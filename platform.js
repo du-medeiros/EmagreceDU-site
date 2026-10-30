@@ -443,7 +443,12 @@
   const GEM = "https://generativelanguage.googleapis.com/v1beta/";
   const GEM_CACHE = "edu-gem-models";
   // Modelos usados só se a lista do Google não puder ser consultada (sem rede na primeira vez)
-  const GEM_FALLBACK = ["gemini-3.8-flash", "gemini-3.5-flash", "gemini-3-flash", "gemini-2.5-flash"];
+  const GEM_FALLBACK = ["gemini-3.6-flash", "gemini-3.8-flash", "gemini-3.5-flash", "gemini-2.5-flash"];
+  /* Modelo padrão quando o campo de modelo está em branco: o 3.6 Flash responde em poucos segundos e
+   * recusa menos pedidos que o 3.8 no plano gratuito. Se a conta não tiver o 3.6, vale a ordem da lista. */
+  const GEM_DEFAULT = "gemini-3.6-flash";
+  const preferDefault = (list) => (list.includes(GEM_DEFAULT) ? [GEM_DEFAULT, ...list.filter((m) => m !== GEM_DEFAULT)] : list);
+  window.__gemPreferDefault = preferDefault;
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const keyHash = (k) => { let h = 7; for (let i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0; return String(h); };
   function gemErr(status, msg) {
@@ -603,7 +608,7 @@
     if (!models) {
       try { models = await listModels(key); if (models.length) cacheModels(key, models); } catch (e) { if (e && e.code === "bad_key") throw e; models = null; }
     }
-    const all = (models && models.length ? models : GEM_FALLBACK).slice(0, 5);
+    const all = preferDefault(models && models.length ? models : GEM_FALLBACK).slice(0, 5);
     const cool = coolMap();
     const fresh = all.filter((m) => !cool[m]);
     const list = fresh.length ? fresh : all;
@@ -725,7 +730,7 @@
     const step = (t) => { try { onStep && onStep(t); } catch (e) { /* ui */ } };
     step("Consultando os modelos disponíveis na sua conta…");
     let models = [];
-    try { models = await listModels(key); if (models.length) cacheModels(key, models); }
+    try { models = await listModels(key); if (models.length) cacheModels(key, models); models = preferDefault(models); }
     catch (e) { if (e && e.code === "bad_key") throw e; }
     step("Testando texto…");
     const t = await gemini("Responda apenas com a palavra: ok", {}, false, { key, model });

@@ -483,12 +483,12 @@
       <section class="aj-panel" id="aj-ia" hidden>
         <button class="aj-back" data-back>‹ Ajustes</button>
         <h2 class="sec">Inteligência artificial (Gemini)</h2>
-      <p class="note" style="margin-top:0">A IA estima calorias e proteína pelo texto ou pela foto do prato, responde o "Posso comer?" e analisa as fotos de progresso. Ela usa a <b>sua</b> chave gratuita do Google AI Studio. <a class="helplink" href="manual.html#chave" target="_blank" rel="noopener">Como criar a chave</a></p>
+      <p class="note" style="margin-top:0">A IA estima calorias e proteína pelo texto ou pela foto do prato, responde o "Posso comer?" e analisa as fotos de progresso. Ela usa a <b>sua</b> chave gratuita do Google AI Studio. <button type="button" class="helplink" id="gemGuide">Como criar a chave, passo a passo</button></p>
       <div class="grid2">
         <input class="minput full" id="gemKey" type="password" placeholder="Chave da API do Google AI Studio" autocomplete="off" spellcheck="false">
         <button class="btn ghost" id="gemShow">Mostrar</button>
         <button class="btn ghost" id="gemTest">Testar conexão</button>
-        <input class="minput full" id="gemModel" list="gemModels" placeholder="Modelo (em branco: o app escolhe o melhor da sua conta)" spellcheck="false" autocomplete="off"><datalist id="gemModels"></datalist>
+        <input class="minput full" id="gemModel" list="gemModels" placeholder="Modelo (em branco: gemini-3.6-flash ou o melhor da sua conta)" spellcheck="false" autocomplete="off"><datalist id="gemModels"></datalist>
       </div>
       <div class="cups" id="gemStatus" style="margin:8px 0 0"></div>
       <details class="note"><summary>Diagnóstico da IA (últimas chamadas)</summary><pre id="gemLog" style="white-space:pre-wrap;font-size:.78rem;margin:6px 0 0"></pre><button class="btn ghost" id="gemLogCopy" style="margin-top:6px">Copiar diagnóstico</button></details>
@@ -566,6 +566,7 @@
         <pre id="errLog" style="white-space:pre-wrap;font-size:.75rem;max-height:200px;overflow:auto;margin:6px 0"></pre>
         <div class="row" style="flex-wrap:wrap"><button class="btn ghost" id="errCopy">Copiar</button><button class="btn ghost" id="errShare">Compartilhar</button><button class="btn ghost" id="errClear">Limpar</button></div>
       </details>
+      <div class="row" style="margin:12px 0 0"><button type="button" class="btn ghost" id="welAgain">Ver as boas-vindas de novo</button></div>
       <p class="note"><a class="helplink" href="manual.html" target="_blank" rel="noopener">Manual do usuário</a> · Metas e cálculos são pontos de partida. Este app não substitui acompanhamento médico ou nutricional.</p>
 
       </section>
@@ -634,6 +635,7 @@
 <script src="features.js"></script>
 <script src="support.js"></script>
 <script src="drive.js"></script>
+<script src="welcome.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

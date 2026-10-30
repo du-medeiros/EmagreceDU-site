@@ -117,7 +117,7 @@ footer{color:var(--muted);font-size:.85rem;margin-top:40px}
   <li>Se aparecer uma tela de termos de uso, leia e aceite.</li>
   <li>No menu, toque em <b>Get API key</b> (em português, <b>Obter chave de API</b>).</li>
   <li>Toque em <b>Create API key</b> (<b>Criar chave de API</b>). Se o site pedir um projeto do Google Cloud, escolha o sugerido ou deixe ele criar um novo.</li>
-  <li>A chave aparece na tela: um texto longo que começa com <code>AIza</code>. Toque em <b>Copiar</b>.</li>
+  <li>A chave aparece na tela: um texto longo que começa com <code>AQ.</code> (chaves criadas antes de meados de 2026 começam com <code>AIza</code>; as duas funcionam). Toque em <b>Copiar</b>.</li>
   <li>No EmagreceDU, abra <b>Ajustes → Inteligência artificial (Gemini)</b> e cole a chave no campo.</li>
   <li>Toque em <b>Testar conexão</b>. Deve aparecer "Conexão funcionando. Texto ok · imagem ok".</li>
   <li>Toque em <b>Salvar tudo</b>. Pronto: os botões de IA já funcionam.</li>
@@ -125,7 +125,7 @@ footer{color:var(--muted);font-size:.85rem;margin-top:40px}
 <div class="box tip"><b>A chave é como uma senha</b>Não envie para ninguém e não publique em lugar nenhum. No app Android ela fica no <b>cofre do Android</b> (Keystore), criptografada; na versão web, num espaço separado do navegador. Ela <b>não vai nos arquivos de backup</b>: ao trocar de aparelho, cole a chave de novo. O app não manda a chave para nenhum servidor além do próprio Google.</div>
 
 <h3>Proteger a chave (recomendado)</h3>
-<p>Você pode limitar a chave para que ela só funcione no endereço do EmagreceDU. Assim, mesmo que alguém a veja, não consegue usar em outro site.</p>
+<p>Você pode limitar a chave para que ela só funcione no endereço do EmagreceDU. Assim, mesmo que alguém a veja, não consegue usar em outro site. Isso vale para as chaves antigas (<code>AIza</code>); as chaves novas (<code>AQ.</code>) já vêm limitadas à API do Gemini.</p>
 <ol class="steps">
   <li>Acesse <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">console.cloud.google.com → APIs e serviços → Credenciais</a>, com a mesma conta Google.</li>
   <li>Toque no nome da sua chave na lista.</li>

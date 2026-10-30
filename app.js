@@ -1,6 +1,6 @@
 /* EmagreceDU · lógica do app (extraída do index.html). Carrega depois de platform.js, features.js, support.js e drive.js. */
 const $ = id => document.getElementById(id);
-const APP_VERSION="1.11.2";
+const APP_VERSION="1.12.0";
 const DEFAULT_RULES="1. Proteína em todas as refeições principais (mínimo de 25 g).\n2. Comer devagar e parar ao sentir saciedade.\n3. Se houver estufamento, preferir vegetais cozidos e evitar frituras.\n4. Beber água ao longo do dia; um copo antes de cada café.";
 const DEFAULTS = {name:"", sex:"F", pronoun:"neutro", med:"Nenhuma", medPeriod:"semanal", medName:"", maxVol:300, rules:DEFAULT_RULES, protein:120, kcal:1500, sodium:2000, water:2500, stepsGoal:7000, snackToll:1500, start:0, height:0, goal:0, birth:"", meds:[], mjWeekday:6};
 function hasMed(){return !!settings.med&&settings.med!=="Nenhuma";}
@@ -252,7 +252,7 @@ $("send").onclick=async()=>{
   }catch(e){
     const c=e&&e.code;
     const base=gemMsg(e)||(c==="image_rejected"?"A foto não foi aceita. Tente outra foto ou descreva em texto.":(ERR[c]||"Não consegui estimar agora. Tente de novo ou lance manualmente."));
-    $("alert").textContent=base+aiDetail(e);$("alert").hidden=false;
+    $("alert").textContent=base+aiDetail(e);$("alert").hidden=false;if(c==="no_key")keyGuideBtn($("alert"));
   }finally{busy=false;$("send").disabled=false;$("camBtn").disabled=false;$("thinking").hidden=true;}
 };
 $("mAdd").onclick=()=>{
@@ -964,6 +964,12 @@ function renderBanners(){
   const le=settings.lastExport;
   const due=le?daysBetween(le,today)>=30:(firstData&&daysBetween(firstData.date,today)>=14);
   if(due)addBanner(box,banner("backup",null,le?"Último backup há "+daysBetween(le,today)+" dias. Exporte um backup para não perder nada se trocar de celular.":"Você já tem duas semanas de dados. Exporte um backup para não perder nada se trocar de celular.","Fazer backup",()=>{goTab("metas");setTimeout(()=>$("bkExport").scrollIntoView({block:"center"}),200);},"backup"));
+  // Sem chave do Gemini: convite discreto para o passo a passo (some de vez no ×)
+  let iaOff=false;try{iaOff=localStorage.getItem("edu-ia-convite")==="off";}catch(e){}
+  if(!iaOff&&window.__secrets&&!window.__secrets.get("gemini")&&window.EDU_WELCOME){
+    const b=banner("plateau","Ligue a IA de graça","Com uma chave sua do Google Gemini, o app estima a comida pela foto ou pelo texto. São 5 passos e uns 3 minutos.","Ver o passo a passo",()=>EDU_WELCOME.open({from:"key"}));
+    const x=document.createElement("button");x.textContent="×";x.setAttribute("aria-label","Dispensar");x.onclick=()=>{try{localStorage.setItem("edu-ia-convite","off");}catch(e){}renderBanners();};b.appendChild(x);b.dataset.k="ia";addBanner(box,b);
+  }
 }
 async function loadMonth(){
   if(!db||!uid)return;
@@ -1717,6 +1723,10 @@ async function gemini(prompt,opt={},key,model){ /* delega à camada de plataform
   const r=opt.json?await sample.json(prompt,{images:opt.images||[]}):await sample(prompt,{images:opt.images||[]});return opt.json?r:r.text;
 }
 const GEM_ERR={gem_blocked:"Não foi possível conectar ao Google. Confira a internet.",gem_key:"A chave do Gemini foi recusada. Confira se copiou inteira e se a API está liberada para ela.",gem_quota:"Limite de uso do Gemini atingido. Tente de novo em alguns minutos.",gem_model:"Modelo do Gemini não encontrado. Confira o nome em Metas.",gem_http:"O Gemini recusou o pedido.",gem_empty:"O Gemini não devolveu resposta (a foto pode ter sido bloqueada pelo filtro dele)."};
+/* botão "como criar a chave" dentro de um aviso (sem chave cadastrada) */
+function keyGuideBtn(box){if(!window.EDU_WELCOME||!box)return;const b=document.createElement("button");b.type="button";b.className="btn ghost";b.style.cssText="display:block;margin-top:8px";b.textContent="Criar minha chave (3 min)";b.onclick=()=>{closeMealSheet();EDU_WELCOME.open({from:"key"});};box.appendChild(b);}
+if($("gemGuide"))$("gemGuide").onclick=()=>EDU_WELCOME.open({from:"key"});
+if($("welAgain"))$("welAgain").onclick=()=>EDU_WELCOME.open({from:"start"});
 function gemMsg(e){return GEM_ERR[e&&e.code]?GEM_ERR[e.code]+(e.message?" ("+String(e.message).slice(0,140)+")":""):null;}
 function refreshAIButtons(){
   const txt=!!sample||gemOn("text");$("send").disabled=!txt;$("send").textContent=txt?"Registrar":"Indisponível";
@@ -1982,7 +1992,8 @@ function onboard(){
     const sg=suggestGoals(w);if(sg)Object.assign(settings,sg);
     weights=[{date:todayKey(),kg:Math.round(w*10)/10}];
     await db.collection("x").doc("settings").set({...settings});await saveWeights();
-    bg.remove();toast("Tudo pronto!");if(typeof renderApoio==="function")renderApoio();
+    bg.remove();if(typeof renderApoio==="function")renderApoio();
+    if(window.EDU_WELCOME)EDU_WELCOME.open({from:"start",name:settings.name});else toast("Tudo pronto!");
     setStatus("Revise metas e regras na aba Metas; a chave do Gemini fica em Ajustes (engrenagem no topo).");setTimeout(()=>setStatus(""),9000);
   };
 }
