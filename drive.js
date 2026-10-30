@@ -134,22 +134,22 @@
       const files = await list().catch(() => []);
       for (const old of files.slice(KEEP)) await remove(old.id).catch(() => {});
       const R = out.resumo;
-      state.msg = "Backup no Drive: " + R.dias + " dias, " + R.refeicoes + " refeições, " + R.fotos + " foto(s) · " + new Date().toLocaleString(I18N.locale, { dateStyle: "short", timeStyle: "short" });
+      state.msg = I18N.t("Backup no Drive: {0} dias, {1} refeições, {2} foto(s) · {3}", R.dias, R.refeicoes, R.fotos, new Date().toLocaleString(I18N.locale, { dateStyle: "short", timeStyle: "short" }));
       if (reason === "manual") toast("Backup guardado no Google Drive");
       return f;
     } catch (e) {
-      state.msg = "Não consegui enviar o backup: " + String(e && e.message || e);
+      state.msg = I18N.t("Não consegui enviar o backup: {0}", String(e && e.message || e));
       if (reason === "manual") toast("Falha no backup do Drive");
       return null;
     } finally { state.busy = false; render(); }
   }
   async function restore(file) {
-    state.busy = true; state.msg = "Baixando " + file.name + "…"; render();
+    state.busy = true; state.msg = I18N.t("Baixando {0}…", file.name); render();
     try {
       const text = await download(file.id);
       state.msg = "";
       importFile(new File([text], file.name, { type: "application/json" }));
-    } catch (e) { state.msg = "Não consegui baixar: " + String(e && e.message || e); }
+    } catch (e) { state.msg = I18N.t("Não consegui baixar: {0}", String(e && e.message || e)); }
     finally { state.busy = false; render(); }
   }
   /* automático: uma vez por semana, quando o app abre com internet e o Drive está conectado */
@@ -171,7 +171,7 @@
     if (!connected()) {
       h += '<p class="note" style="margin-top:0">Guarda uma cópia completa (com as fotos) numa pasta oculta do seu Google Drive, que só este app vê. Uma vez por semana, automático; e sempre que você tocar em Enviar agora. Para trocar de celular, é só conectar a mesma conta e restaurar.</p><div class="row"><button class="btn" id="drvConn">Conectar ao Google Drive</button></div>';
     } else {
-      h += '<p class="note" style="margin-top:0">Conectado como <b>' + esc(state.email) + '</b>. ' + (state.last ? "Último envio: " + fmt(state.last) + "." : "Nenhum envio ainda.") + " Automático uma vez por semana; mantém os " + KEEP + " mais recentes.</p>";
+      h += '<p class="note" style="margin-top:0">' + esc(I18N.t("Conectado como")) + ' <b>' + esc(state.email) + '</b>. ' + esc(state.last ? I18N.t("Último envio: {0}.", fmt(state.last)) : I18N.t("Nenhum envio ainda.")) + " " + esc(I18N.t("Automático uma vez por semana; mantém os {0} mais recentes.", KEEP)) + "</p>";
       h += '<div class="row" style="flex-wrap:wrap"><button class="btn" id="drvNow"' + (state.busy ? " disabled" : "") + '>Enviar agora</button><button class="btn ghost" id="drvList">Ver backups no Drive</button><button class="btn ghost" id="drvOff">Desconectar</button></div>';
       if (state.files.length) {
         h += '<div class="drvlist">' + state.files.slice(0, KEEP).map((f) => '<div class="item"><div class="t"><div class="n">' + esc(f.name.replace("emagrecedu-backup-", "").replace(".json", "")) + '</div><div class="m">' + fmt(f.modifiedTime) + " · " + Math.round((Number(f.size) || 0) / 1024 / 1024 * 10) / 10 + ' MB</div></div><button class="btn ghost small" data-restore="' + esc(f.id) + '">Restaurar</button></div>').join("") + "</div>";
@@ -180,7 +180,7 @@
     if (state.msg) h += '<div class="cups" style="margin:8px 0 0">' + esc(state.msg) + "</div>";
     host.innerHTML = h;
     const on = (id, fn) => { const b = document.getElementById(id); if (b) b.onclick = fn; };
-    on("drvConn", async () => { state.busy = true; state.msg = "Abrindo o login do Google…"; render(); try { await connect(); state.msg = ""; await list().catch(() => {}); } catch (e) { state.msg = "Não conectou: " + String(e && e.message || e); } finally { state.busy = false; render(); } });
+    on("drvConn", async () => { state.busy = true; state.msg = "Abrindo o login do Google…"; render(); try { await connect(); state.msg = ""; await list().catch(() => {}); } catch (e) { state.msg = I18N.t("Não conectou: {0}", String(e && e.message || e)); } finally { state.busy = false; render(); } });
     on("drvNow", () => backup("manual"));
     on("drvList", async () => { state.busy = true; state.msg = "Consultando o Drive…"; render(); try { await list(); state.msg = state.files.length ? "" : "Nenhum backup no Drive ainda."; } catch (e) { state.msg = String(e && e.message || e); } finally { state.busy = false; render(); } });
     on("drvOff", async () => { await disconnect(); state.msg = "Desconectado. Os backups continuam no seu Drive até você remover o acesso do app na conta Google."; render(); });

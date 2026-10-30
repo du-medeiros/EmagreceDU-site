@@ -1,6 +1,6 @@
 /* EmagreceDU · lógica do app (extraída do index.html). Carrega depois de platform.js, features.js, support.js e drive.js. */
 const $ = id => document.getElementById(id);
-const APP_VERSION="1.12.2";
+const APP_VERSION="1.13.1";
 const DEFAULT_RULES="1. Proteína em todas as refeições principais (mínimo de 25 g).\n2. Comer devagar e parar ao sentir saciedade.\n3. Se houver estufamento, preferir vegetais cozidos e evitar frituras.\n4. Beber água ao longo do dia; um copo antes de cada café.";
 const DEFAULTS = {name:"", sex:"F", pronoun:"neutro", med:"Nenhuma", medPeriod:"semanal", medName:"", maxVol:300, rules:DEFAULT_RULES, protein:120, kcal:1500, sodium:2000, water:2500, stepsGoal:7000, snackToll:1500, start:0, height:0, goal:0, birth:"", meds:[], mjWeekday:6};
 function hasMed(){return !!settings.med&&settings.med!=="Nenhuma";}
@@ -1914,7 +1914,10 @@ $("bkExport").onclick=async()=>{
     const {docs,blobs}=await window.__store.exportAll();
     const days=Object.keys(docs).filter(k=>k.startsWith("day-"));
     const out={app:"emagrecedu",formato:2,origem:"emagrecedu-app",versao:APP_VERSION,exportado:new Date().toISOString(),resumo:summarize(docs,blobs),docs,blobs};
-    await downloads.save({filename:"emagrecedu-backup-"+todayKey()+".json",data:new Blob([JSON.stringify(out)],{type:"application/json"})});
+    const pw=window.EDU_X?EDU_X.backupPassword():"";
+    if(window.EDU_X&&$("bkPwOn")&&$("bkPwOn").checked&&pw.length<6){msg.textContent="A senha precisa ter pelo menos 6 caracteres.";$("bkPw").focus();return;}
+    const file=pw?await EDU_X.encrypt(out,pw):out;
+    await downloads.save({filename:"emagrecedu-backup-"+todayKey()+(pw?"-protegido":"")+".json",data:new Blob([JSON.stringify(file)],{type:"application/json"})});
     settings.lastExport=todayKey();await db.collection("x").doc("settings").set({...settings});
     const R=out.resumo;msg.textContent="Backup salvo em Downloads: "+R.dias+" dias, "+R.refeicoes+" refeições, "+R.pesagens+" pesagens, "+R.fotos+" fotos.";bkInfo();renderBanners();
   }catch(e){msg.textContent="Não foi possível gerar o backup ("+(e&&e.message||e)+").";}
@@ -1927,6 +1930,12 @@ function importFile(f){
   const msg=$("bkMsg");msg.textContent="Lendo o arquivo…";
   const rd=new FileReader();rd.onload=async()=>{
     let o;try{o=JSON.parse(String(rd.result));}catch(e){msg.textContent="Arquivo inválido: não é um backup completo.";toast("Arquivo inválido");return;}
+    if(o&&o.app==="emagrecedu"&&o.cifrado&&window.EDU_X){EDU_X.askDecrypt(o,importParsed);return;}
+    importParsed(o);
+  };rd.readAsText(f);
+}
+function importParsed(o){
+    const msg=$("bkMsg");
     let docs=null,blobs={};
     if(o&&o.app==="emagrecedu"&&o.docs){docs=o.docs;blobs=o.blobs||{};}
     else if(o&&o.app==="diario-de-bordo"&&o.dados){docs=o.dados;}
@@ -1947,7 +1956,6 @@ function importFile(f){
     if(sh){const p=document.createElement("p");p.className="note";p.style.margin="0 0 6px";p.textContent="Backup de "+when+": "+R.dias+" dias, "+R.refeicoes+" refeições, "+R.pesagens+" pesagens, "+R.aplicacoes+" aplicações, "+R.medidas+" medidas, "+R.exames+" exames e "+R.fotos+" fotos.";
       const p2=document.createElement("p");p2.className="note";p2.style.margin="0 0 6px";p2.style.color="var(--over)";p2.textContent=Object.keys(window.__store.docs()).length?"Os dados que estão agora neste aparelho serão substituídos pelos do arquivo.":"O app vai carregar estes dados e reiniciar.";
       sh.insertBefore(p2,sh.querySelector(".f"));sh.insertBefore(p,p2);const sv=sh.querySelector(".btn");if(sv)sv.textContent="Importar";}
-  };rd.readAsText(f);
 }
 function migrateDocs(docs,origem){
   docs=JSON.parse(JSON.stringify(docs));
@@ -2053,7 +2061,7 @@ document.querySelectorAll(".app-nav button[data-tab]").forEach(b=>b.onclick=()=>
 });
 
 /* ---------- Boot ---------- */
-EDU.init();
+EDU.init();if(window.EDU_X)EDU_X.init();
 renderDay();renderWeights();fillSettings();renderHealth();$("wDate").value=todayKey();$("wDate").max=todayKey();$("labDate").value=todayKey();$("labDate").max=todayKey();["mDate","biDate"].forEach(i=>{$(i).value=todayKey();$(i).max=todayKey();});renderMeasures();renderLabs();renderPhotos();renderGoal();
 (async()=>{
   const [d,u,s,dl,as]=await Promise.all([claude.use("db"),claude.use("user"),claude.use("sample"),claude.use("downloads"),claude.use("assets")]);

@@ -168,6 +168,7 @@ footer{color:var(--muted);font-size:.85rem;margin-top:40px}
   <li><b>Modo dia difícil:</b> para dias de enjoo ou sem fome. Mostra um plano mínimo e não conta o dia como falha.</li>
   <li>Toque em qualquer item para <b>editar</b>; o × pede confirmação antes de excluir.</li>
   <li>Toque na data no topo para voltar para hoje; as setas navegam pelos dias.</li>
+  <li><b>Ideias da IA</b> (na folha de registro): <b>Cardápio do restaurante</b> lê a foto do cardápio e indica até 5 pratos que melhor encaixam no que falta de proteína e calorias, com uma dica para pedir; <b>Receita com o que tenho</b> cria uma receita proteica com os ingredientes que você listar e lança uma porção no diário.</li>
 </ul>
 
 <h2 id="saude">5. Aba Saúde</h2>
@@ -200,12 +201,16 @@ footer{color:var(--muted);font-size:.85rem;margin-top:40px}
   <li><b>Medidas</b> (pescoço, quadril, braço, coxa) com gordura corporal estimada, e <b>bioimpedância</b>.</li>
   <li><b>Proteção da massa magra:</b> junta o ritmo de perda (até ~1% do peso por semana), a proteína dos últimos 14 dias, o treino de força das últimas 4 semanas e o músculo medido na bioimpedância. Mostra o que está protegendo o músculo e o que merece atenção.</li>
   <li><b>Fotos de progresso:</b> uma frontal e uma lateral por sessão; comparação antes × agora e análise da IA. Use a <b>📷 Câmera guia</b>: ela mostra a última foto da mesma pose em transparência por cima da câmera, para você se encaixar na mesma posição e distância. Tem timer de 3 ou 10 segundos (para tirar sozinho), troca entre câmera frontal e traseira e um controle da transparência. Dicas: mesmo lugar, mesma luz, celular na altura do umbigo, de manhã em jejum.</li>
+  <li><b>Comparar deslizando:</b> com duas sessões de fotos ou mais, o botão abre o antes e depois sobrepostos com uma barra para arrastar. <b>Gerar imagem para compartilhar</b> monta uma imagem lado a lado; o rosto sai desfocado e o peso e a cintura só aparecem se você marcar.</li>
   <li><b>Exames de sangue</b> com faixa de referência do laudo e painel do que repetir.</li>
 </ul>
 
 <h2 id="relatorio">7. Aba Relatório</h2>
 <p>Escolha o período (7 a 90 dias) para ver médias, gráficos e indicadores de segurança. Entram também o treino de força por semana, os remédios tomados "quando precisar", o padrão do ciclo e, se você usa o Health Connect no app Android, os <b>passos</b> (com gráfico) e o <b>sono medido</b> pelo relógio ou celular. Os botões:</p>
 <ul>
+  <li><b>O que seus dados mostram:</b> padrões calculados no aparelho com os últimos 120 dias, sem IA: suas maiores fontes de proteína, o dia da semana com mais calorias, fome nos dias com mais proteína ou água, sódio e balança no dia seguinte, sono depois de dias com mais passos, constância nos fins de semana. São correlações dos seus registros, não diagnóstico.</li>
+  <li><b>Conquistas:</b> 25 medalhas (sequências de registro, metas de proteína e água, % do peso perdido, cintura, fotos, passos, treino de força). As datas vão junto no backup.</li>
+  <li><b>Sua semana:</b> o resumo da semana passada (dias na meta de proteína e de água, proteína média, passos, peso) com uma imagem em formato de story para compartilhar; o peso só entra na imagem se você ligar. Na segunda e na terça, um aviso no Hoje leva até ele.</li>
   <li><b>Feedback do parceiro:</b> o que funcionou, pontos de atenção e um plano para os próximos dias.</li>
   <li><b>Relatório para o médico:</b> texto objetivo para levar à consulta.</li>
   <li><b>Modo consulta:</b> uma tela com tudo o que o médico costuma perguntar, para mostrar no celular.</li>
@@ -213,6 +218,8 @@ footer{color:var(--muted);font-size:.85rem;margin-top:40px}
 </ul>
 
 <h2 id="metas">8. Aba Metas e Ajustes</h2>
+<h3>Modo manutenção</h3>
+<p>Quando o peso chega na meta, um aviso oferece o <b>modo manutenção</b> (também dá para ligar no topo da aba Metas). A meta de calorias passa para a de manutenção, calculada pela sua altura, idade, sexo e peso da meta, e o app acompanha uma faixa de 1,5 kg para cima e para baixo da meta: se as duas últimas pesagens passarem da faixa, aparece um aviso. Desligar volta a meta de calorias anterior. Combine a manutenção com o seu médico.</p>
 <h3>Medicação pelo princípio ativo</h3>
 <p>Cadastre a medicação pelo <b>princípio ativo</b> (semaglutida, tirzepatida, liraglutida, dulaglutida; retatrutida, ainda em pesquisa; ou "Outro"), que está na caixa e na receita. O app não cita marcas comerciais: a legislação sanitária brasileira restringe a divulgação de medicamentos sob prescrição, e nomes de marca são propriedade dos laboratórios. A liraglutida é diária; as outras, semanais: o app ajusta o ciclo, os lembretes e a revisão de dose conforme isso.</p>
 <h3>Referência para os cálculos e pronome</h3>
@@ -298,6 +305,7 @@ footer{color:var(--muted);font-size:.85rem;margin-top:40px}
   <li>O app mostra o resumo (dias, refeições, pesagens, fotos), importa, reinicia e confere se a contagem bateu.</li>
 </ol>
 <p>O app lembra você de fazer backup a cada 30 dias.</p>
+<p><b>Backup com senha:</b> ligue <b>Proteger o backup com senha</b> antes de exportar. O arquivo sai criptografado (AES-256) e só abre com a senha, que o app pede na hora de importar. Sem a senha não há como recuperar o conteúdo: guarde-a num gerenciador de senhas.</p>
 <h3>Perfis</h3>
 <p>Em <b>Ajustes → Perfis</b>, mais de uma pessoa pode usar o mesmo celular: cada perfil tem o próprio diário, metas, fotos e backups, separados por completo. "Criar e abrir" faz o cadastro inicial do novo perfil; o botão Abrir troca; o × remove um perfil secundário (faça backup antes). Lembretes e widgets mostram o perfil aberto; a chave da IA e o bloqueio valem para o aparelho.</p>
 <h3>Google Drive (automático)</h3>
