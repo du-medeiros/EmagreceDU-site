@@ -1433,9 +1433,9 @@ Converta vírgula decimal em ponto. Se a referência vier como "< 200", refMin n
         ...o,
         "--bg-canvas": o["--bg"], "--bg-surface-1": o["--panel"], "--bg-surface-2": o["--soft"], "--bg-glass": "rgba(" + rgb(o["--panel"]) + "," + (dark ? ".88" : ".82") + ")",
         "--border-subtle": o["--line"], "--text-primary": o["--ink"], "--text-secondary": hx(nv.tone(dark ? 80 : 30)), "--text-muted": o["--muted"],
-        "--brand-primary": hx(pr.tone(dark ? 70 : 40)), "--brand-primary-soft": hx(pr.tone(dark ? 20 : 92)),
+        "--brand-primary": hx(pr.tone(40)), "--brand-primary-soft": hx(pr.tone(dark ? 20 : 92)),
         "--semantic-sage": o["--prot"], "--semantic-sage-soft": o["--prot-soft"], "--semantic-sage-ink": hx(pr.tone(dark ? 90 : 30)),
-        "--semantic-amber": o["--warn"], "--semantic-amber-soft": o["--warn-soft"], "--semantic-danger": o["--over"], "--semantic-danger-soft": o["--over-soft"],
+        "--semantic-amber": o["--warn"], "--semantic-amber-soft": o["--warn-soft"], "--semantic-amber-ink": hx(th.palettes.tertiary.tone(dark ? 80 : 30)), "--warn-ink": hx(th.palettes.tertiary.tone(dark ? 80 : 30)), "--semantic-danger": o["--over"], "--semantic-danger-soft": o["--over-soft"],
         "--semantic-water": o["--water"], "--semantic-water-soft": o["--water-soft"],
       };
     };
@@ -1448,9 +1448,12 @@ Converta vírgula decimal em ponto. Se a referência vier como "< 200", refMin n
   /* Topo do app: escuro neutro (padrão; o valor guardado continua "navy"), escuro na cor principal ou claro na cor principal */
   const NAVY = { "--hero": "#1E241E", "--hero-2": "#283128", "--hero-ink": "#F6F4EF", "--hero-muted": "#B8B0A4", "--hero-line": "rgba(246,244,239,.12)" };
   const NAVY_D = { "--hero": "#171A17", "--hero-2": "#222722", "--hero-ink": "#F4F0E8", "--hero-muted": "#9E9689", "--hero-line": "rgba(244,240,232,.1)" };
+  /* Topo do app: "auto" (padrão) acompanha as cores escolhidas; "navy" fica sempre no escuro neutro.
+   * Até a 1.12.1 o padrão gravado era "navy": sem a marca heroV2, ele vale como "auto". */
+  E.heroStyle = () => { const s = settings.heroStyle; return !s || s === "auto" || (s === "navy" && !settings.heroV2) ? "auto" : s; };
   function heroVars(th, dark) {
     const M = window.__mcu, hx = (v) => M.hexFromArgb(v), pr = th.palettes.primary;
-    const style = settings.heroStyle || "navy";
+    let style = E.heroStyle(); if (style === "auto") style = "seed";
     if (style === "navy") return dark ? NAVY_D : NAVY;
     if (style === "light") return { "--hero": hx(pr.tone(dark ? 20 : 90)), "--hero-2": hx(pr.tone(dark ? 30 : 80)), "--hero-ink": hx(pr.tone(dark ? 95 : 10)), "--hero-muted": hx(pr.tone(dark ? 80 : 30)), "--hero-line": dark ? "rgba(255,255,255,.12)" : "rgba(0,0,0,.1)" };
     return { "--hero": hx(pr.tone(dark ? 12 : 20)), "--hero-2": hx(pr.tone(dark ? 22 : 32)), "--hero-ink": hx(pr.tone(98)), "--hero-muted": hx(pr.tone(80)), "--hero-line": "rgba(255,255,255,.12)" };
@@ -1465,7 +1468,7 @@ Converta vírgula decimal em ponto. Se a referência vier como "< 200", refMin n
     const seed = (mode === "sistema" && E.systemSeed) || settings.seed || "#1E7F69";
     const th = M.themeFromSourceColor(M.argbFromHex(seed));
     const hx = (v) => M.hexFromArgb(v), pr = th.palettes.primary, se = th.palettes.secondary;
-    const light = (settings.heroStyle || "navy") === "light" && !dark; // no tema escuro do celular o widget fica escuro
+    const light = E.heroStyle() === "light" && !dark; // no tema escuro do celular o widget fica escuro
     return {
       bg1: hx(pr.tone(light ? 92 : dark ? 8 : 12)), bg2: hx(pr.tone(light ? 80 : dark ? 20 : 26)),
       ink: hx(pr.tone(light ? 10 : 98)), muted: hx(pr.tone(light ? 35 : 80)),
@@ -1479,8 +1482,8 @@ Converta vírgula decimal em ponto. Se a referência vier como "< 200", refMin n
     const c = E.widgetColors();
     pv.style.setProperty("--wp-1", c.bg1); pv.style.setProperty("--wp-2", c.bg2); pv.style.setProperty("--wp-ink", c.ink); pv.style.setProperty("--wp-muted", c.muted);
     pv.style.setProperty("--wp-acc", c.accent); pv.style.setProperty("--wp-water", c.water); pv.style.setProperty("--wp-btn", c.btnText);
-    pv.querySelectorAll(".wprev-chips em:not(.b)").forEach((x) => { x.style.background = c.custom && settings.heroStyle === "light" ? "rgba(0,0,0,.08)" : "rgba(255,255,255,.1)"; });
-    pv.querySelector(".wprev-g").style.borderColor = c.custom && settings.heroStyle === "light" ? "rgba(0,0,0,.1)" : "rgba(255,255,255,.12)";
+    pv.querySelectorAll(".wprev-chips em:not(.b)").forEach((x) => { x.style.background = c.custom && E.heroStyle() === "light" ? "rgba(0,0,0,.08)" : "rgba(255,255,255,.1)"; });
+    pv.querySelector(".wprev-g").style.borderColor = c.custom && E.heroStyle() === "light" ? "rgba(0,0,0,.1)" : "rgba(255,255,255,.12)";
   };
   E.SWATCHES = [["#1E7F69", "Verde EmagreceDU"], ["#B84A27", "Terracota"], ["#2A6FDB", "Azul"], ["#0E9AA7", "Turquesa"], ["#6F4FD8", "Roxo"], ["#D23B7A", "Rosa"], ["#C8362F", "Vermelho"], ["#E07A1F", "Laranja"], ["#4B5563", "Grafite"]];
   E.renderSwatches = function () {
@@ -1710,7 +1713,7 @@ Converta vírgula decimal em ponto. Se a referência vier como "< 200", refMin n
       .strweek .sd.today small{font-weight:700;color:var(--ink)}
       .strweek small{font-size:.74rem;color:var(--muted)}
       .grp{margin:4px 0 12px}
-      .leanv{font-family:var(--num);font-weight:700;margin-bottom:8px}.leanv.good{color:var(--prot)}.leanv.warn{color:var(--warn)}
+      .leanv{font-family:var(--num);font-weight:700;margin-bottom:8px}.leanv.good{color:var(--prot)}.leanv.warn{color:var(--warn-ink,var(--warn))}
       .leanrow{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:.92rem}
       .leanrow small{color:var(--muted);display:block;font-size:.82rem}
       .leanrow .dot{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:none;background:var(--line)}
