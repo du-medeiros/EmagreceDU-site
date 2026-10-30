@@ -1,6 +1,6 @@
 /* EmagreceDU · lógica do app (extraída do index.html). Carrega depois de platform.js, features.js, support.js e drive.js. */
 const $ = id => document.getElementById(id);
-const APP_VERSION="1.11.1";
+const APP_VERSION="1.11.2";
 const DEFAULT_RULES="1. Proteína em todas as refeições principais (mínimo de 25 g).\n2. Comer devagar e parar ao sentir saciedade.\n3. Se houver estufamento, preferir vegetais cozidos e evitar frituras.\n4. Beber água ao longo do dia; um copo antes de cada café.";
 const DEFAULTS = {name:"", sex:"F", pronoun:"neutro", med:"Nenhuma", medPeriod:"semanal", medName:"", maxVol:300, rules:DEFAULT_RULES, protein:120, kcal:1500, sodium:2000, water:2500, stepsGoal:7000, snackToll:1500, start:0, height:0, goal:0, birth:"", meds:[], mjWeekday:6};
 function hasMed(){return !!settings.med&&settings.med!=="Nenhuma";}
