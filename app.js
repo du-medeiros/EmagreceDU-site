@@ -1972,7 +1972,39 @@ $("wipeAll").onclick=()=>{
 };
 
 /* ---------- Primeiro acesso ---------- */
-function onboard(){
+/* Plano vindo do diagnóstico do site (emagrecedu.app/comecar): chega no fragmento #plano=<base64url
+   de um JSON>, que o navegador não envia a servidor nenhum. Lido uma vez e apagado da barra. */
+function quizPlan(){
+  try{
+    const m=location.hash.match(/[#&]plano=([A-Za-z0-9_-]+)/);if(!m)return null;
+    const b64=m[1].replace(/-/g,"+").replace(/_/g,"/");const json=decodeURIComponent(atob(b64).split("").map(c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0")).join(""));
+    const p=JSON.parse(json);if(!p||p.v!==1||p.origem!=="quiz")return null;
+    history.replaceState(null,"",location.pathname+location.search);
+    const n=x=>{const v=Number(x);return Number.isFinite(v)?v:0;};
+    return {sexo:p.sexo==="F"||p.sexo==="M"?p.sexo:"",altura:n(p.altura),peso:n(p.peso),meta:n(p.meta),proteina:n(p.proteina),agua:n(p.agua),tratamento:!!p.tratamento};
+  }catch(e){return null;}
+}
+/* Quem já usa o app e refaz o diagnóstico: mostra as metas novas ao lado das atuais e só troca se a
+   pessoa confirmar. Peso, altura e histórico não mudam. */
+function applyQuizPlan(plano,col,cur){
+  const prot=plano.proteina>=40&&plano.proteina<=300?plano.proteina:0,agua=plano.agua>=1000&&plano.agua<=3500?plano.agua:0;
+  if(!prot&&!agua)return;
+  // O tour de boas-vindas fica por cima de tudo: espera ele fechar.
+  if(window.EDU_WELCOME&&EDU_WELCOME.isOpen()){setTimeout(()=>applyQuizPlan(plano,col,cur),600);return;}
+  const r=x=>Math.round(Number(x)||0);
+  const bg=document.createElement("div");bg.className="sheet-bg";const sh=document.createElement("div");sh.className="sheet";sh.setAttribute("role","dialog");sh.setAttribute("aria-modal","true");sh.setAttribute("aria-labelledby","qpT");
+  const row=(t,a,b,u)=>b?'<tr><th scope="row" style="text-align:left;font-weight:500;padding:6px 0">'+t+'</th><td style="padding:6px 8px;color:var(--muted)">'+r(a)+' '+u+'</td><td style="padding:6px 0;font-weight:700">'+r(b)+' '+u+'</td></tr>':'';
+  sh.innerHTML='<h2 id="qpT">Seu plano do diagnóstico chegou</h2><p class="note">Quer usar as metas do diagnóstico no lugar das atuais? Seu peso, as medidas e o histórico continuam como estão.</p>'+
+    '<table style="width:100%;border-collapse:collapse;margin:12px 0"><thead><tr><th></th><th style="text-align:left;font-weight:500;color:var(--muted);padding:0 8px">Atual</th><th style="text-align:left;padding:0">Diagnóstico</th></tr></thead><tbody>'+
+    row("Proteína por dia",cur.protein,prot,"g")+row("Água por dia",cur.water,agua,"ml")+'</tbody></table>'+
+    '<button class="btn" id="qpYes" style="width:100%">Usar as metas do diagnóstico</button><button class="btn ghost" id="qpNo" style="width:100%;margin-top:8px">Manter as atuais</button>';
+  bg.appendChild(sh);document.body.appendChild(bg);
+  const close=()=>bg.remove();
+  sh.querySelector("#qpNo").onclick=close;
+  sh.querySelector("#qpYes").onclick=()=>{const s2={...cur};if(prot)s2.protein=prot;if(agua)s2.water=agua;s2.origem="quiz";settings={...settings,...s2};queueWrite(()=>col.doc("settings").set(s2));close();toast("Metas do diagnóstico aplicadas");};
+  setTimeout(()=>sh.querySelector("#qpYes").focus(),50);
+}
+function onboard(plano){
   const bg=document.createElement("div");bg.className="sheet-bg";const sh=document.createElement("div");sh.className="sheet onb";sh.setAttribute("role","dialog");sh.setAttribute("aria-modal","true");
   sh.innerHTML='<h2>Boas-vindas ao EmagreceDU</h2><p class="note">Seu diário de emagrecimento: proteína, hidratação, medicação, sintomas, medidas e relatórios para o médico. Os dados ficam só neste aparelho.</p>'+
   '<div class="f"><label class="full">Seu nome<input id="obName" autocomplete="given-name"></label>'+
@@ -1989,6 +2021,16 @@ function onboard(){
   '<p class="note" style="margin-top:12px">As metas sugeridas são pontos de partida. Este app não substitui acompanhamento médico ou nutricional.</p>';
   bg.appendChild(sh);document.body.appendChild(bg);
   sh.querySelector("#obBirth").max=todayKey();
+  if(plano){
+    const set=(id,val)=>{if(val)sh.querySelector(id).value=val;};
+    if(plano.sexo)set("#obSex",plano.sexo);
+    if(plano.altura>1.2&&plano.altura<2.3)set("#obH",String(plano.altura));
+    if(plano.peso>35)set("#obW",String(Math.round(plano.peso*10)/10));
+    if(plano.meta>30)set("#obG",String(plano.meta));
+    if(plano.tratamento)set("#obMed","Outro");
+    const note=document.createElement("div");note.className="cups";note.style.cssText="margin:8px 0 0;color:var(--prot-ink)";note.textContent="Suas respostas do diagnóstico já vieram preenchidas"+(plano.proteina?": meta de "+plano.proteina+" g de proteína"+(plano.agua?" e "+plano.agua+" ml de água":"")+" por dia":"")+". Confira o nome e a data de nascimento.";
+    sh.querySelector(".f").after(note);
+  }
   try{const P=window.__profiles;if(P&&P.current()){const me=P.list().find(x=>x.id===P.current());if(me&&me.name)sh.querySelector("#obName").value=me.name;const back=document.createElement("button");back.className="btn ghost";back.style.cssText="margin-top:8px;width:100%";back.textContent="Voltar ao perfil principal";back.onclick=()=>P.switchTo("");sh.querySelector(".alt").appendChild(back);}}catch(e){}
   sh.querySelector("#obImport").onclick=()=>{$("bkFile").click();};
   sh.querySelector("#obGo").onclick=async()=>{
@@ -1998,6 +2040,7 @@ function onboard(){
     if(w<35||w>350){sh.querySelector("#obMsg").textContent="Informe o peso atual em kg.";return;}
     settings={...DEFAULTS,name:v("#obName").trim(),sex:v("#obSex"),pronoun:"neutro",birth:v("#obBirth")||"",height:h,start:Math.round(w*10)/10,goal:g>30&&g<w?Math.round(g*10)/10:0,med:v("#obMed")};EDU.normMed(settings);
     const sg=suggestGoals(w);if(sg)Object.assign(settings,sg);
+    if(plano){if(plano.proteina>=40&&plano.proteina<=300)settings.protein=plano.proteina;if(plano.agua>=1000&&plano.agua<=3500)settings.water=plano.agua;settings.origem="quiz";}
     weights=[{date:todayKey(),kg:Math.round(w*10)/10}];
     await db.collection("x").doc("settings").set({...settings});await saveWeights();
     bg.remove();if(typeof renderApoio==="function")renderApoio();
@@ -2079,7 +2122,10 @@ renderDay();renderWeights();fillSettings();renderHealth();$("wDate").value=today
   col.doc("bio").onSnapshot(x=>{bio=x.exists&&Array.isArray(x.data().entries)?JSON.parse(JSON.stringify(x.data().entries)):[];renderMeasures();},()=>{});
   col.doc("labs").onSnapshot(x=>{labs=x.exists&&Array.isArray(x.data().entries)?JSON.parse(JSON.stringify(x.data().entries)):[];renderLabs();},()=>{});
   subscribeDay();loadRecent();loadMonth();loadAllDays();renderPhotos();refreshAIButtons();
-  if(!first.exists)onboard();else setTimeout(ensureProfile,300);
+  const plano=quizPlan();
+  if(!first.exists)onboard(plano);else{setTimeout(ensureProfile,300);if(plano)setTimeout(()=>applyQuizPlan(plano,col,{...DEFAULTS,...first.data()}),400);}
+  // Link do diagnóstico aberto com o app já aberto na mesma aba: só o # muda, a página não recarrega.
+  addEventListener("hashchange",()=>{const p=quizPlan();if(p&&!document.querySelector(".onb"))applyQuizPlan(p,col,{...settings});});
   window.__appReady=true;window.dispatchEvent(new Event("edu:ready"));
   const imp=sessionStorage.getItem("emagrecedu-import");
   if(imp){sessionStorage.removeItem("emagrecedu-import");try{const o=JSON.parse(imp);const R=o.after;setStatus((o.ok?"Backup importado e conferido: ":"Backup importado, mas a contagem não bateu; confira: ")+R.dias+" dias, "+R.refeicoes+" refeições, "+R.pesagens+" pesagens, "+o.fotos+" fotos.",!o.ok);setTimeout(()=>setStatus(""),12000);}catch(e){}}
